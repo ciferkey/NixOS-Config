@@ -63,21 +63,35 @@
       value.source = value.flake;
     })
     config.nix.registry;
-
+  
+  # Enable flakes and automatically clean up the nix store
   nix.settings = {
-    # Enable flakes and new 'nix' command
-    experimental-features = "nix-command flakes";
-    # Deduplicate and optimize nix store
     auto-optimise-store = true;
+    experimental-features = "nix-command flakes";
+  };
+  nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
   };
 
+  # Bootloader
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 5;
+    consoleMode = "auto";
+  };
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.hostName = "nixos";
-
-  boot.loader.systemd-boot.enable = true;
+  # Firmware
+  services.fwupd.enable = true;
+  hardware.enableAllFirmware = true;
 
   # Enable networking
+  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -158,4 +172,7 @@
     remotePlay.openFirewall = true;
     gamescopeSession.enable = true;
   };
+
+  
+  zramSwap.enable = true;
 }
