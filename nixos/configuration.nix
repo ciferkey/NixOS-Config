@@ -41,6 +41,16 @@
       #     patches = [ ./change-hello-to-hi.patch ];
       #   });
       # })
+      (final: prev: {
+        r2modman = prev.r2modman.overrideAttrs (old: {
+          src = prev.fetchFromGitHub {
+            owner = "ebkr";
+            repo = "r2modmanplus";
+            rev = "v3.1.45";
+            hash = "sha256-6o6iPDKKqCzt7H0a64HGTvEvwO6hjRh1Drl8o4x+4ew=";
+          };
+        });
+      })
     ];
     # Configure your nixpkgs instance
     config = {
@@ -136,22 +146,32 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
   };
-
+ 
+  # User Settings
+  programs.fish.enable = true;
   users.users.ciferkey = {
     isNormalUser = true;
     description = "ciferkey";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "adbusers" "networkmanager" "wheel" ];
     packages = with pkgs; [
+      discord
       firefox
       git
       kate
       neovim
+      r2modman
       xivlauncher
     ];
+    shell = pkgs.fish;
   };
+
+  services.flatpak.enable = true;
+  services.packagekit.enable = true;
+
+  # ADB has to be enabled this way https://nixos.wiki/wiki/Android
+  programs.adb.enable = true;
 
   # Enable automatic login for the user.
   services.xserver.displayManager.autoLogin.enable = true;
@@ -167,12 +187,23 @@
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.05";
 
+  # Game Support
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
     gamescopeSession.enable = true;
   };
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport32Bit = true;
+  hardware.steam-hardware.enable = true;
+  programs.gamemode.enable = true;
+  hardware.openrazer.enable = true;
+  hardware.openrazer.users = [ "ciferkey" ];
+  programs.corectrl.enable = true;
 
-  
   zramSwap.enable = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+                "electron-25.9.0" # until obsidian gets their act together
+  ];
 }
