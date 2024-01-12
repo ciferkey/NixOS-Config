@@ -53,6 +53,7 @@
     anki
     bottles
     btop
+    cachix
     caffeine-ng
     discord
     efibootmgr
@@ -91,9 +92,18 @@
     enable = true;
   };
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   programs.fish = {
     enable = true;
     plugins = [
+      {
+        name = "tide";
+        src = pkgs.fishPlugins.tide;
+      }
       { 
         name = "fzf-fish"; 
         src = pkgs.fishPlugins.fzf-fish.src;
