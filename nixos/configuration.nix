@@ -156,13 +156,8 @@
     description = "ciferkey";
     extraGroups = [ "adbusers" "networkmanager" "wheel" ];
     packages = with pkgs; [
-      discord
-      firefox
       git
-      kate
       neovim
-      r2modman
-      xivlauncher
     ];
     shell = pkgs.fish;
   };
@@ -197,13 +192,11 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.steam-hardware.enable = true;
   programs.gamemode.enable = true;
+  programs.gamescope.enable = true;
   hardware.openrazer.enable = true;
   hardware.openrazer.users = [ "ciferkey" ];
   programs.corectrl.enable = true;
 
   zramSwap.enable = true;
 
-  nixpkgs.config.permittedInsecurePackages = [
-                "electron-25.9.0" # until obsidian gets their act together
-  ];
 }

@@ -47,15 +47,30 @@
     };
   };
 
+  fonts.fontconfig.enable = true;
+
   home.packages = with pkgs; [
-    autojump
+    anki
+    bottles
     btop
+    caffeine-ng
+    discord
+    efibootmgr
+    freetube
     fd
     fzf
+    insomnia
+    jellyfin-media-player
+    jetbrains.pycharm-professional
+    mangohud
+    (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
     nixpkgs-review
     nix-update
-    reptyr
+    obsidian
+    pocket-casts
+    unstable.r2modman
     unzip
+    xivlauncher
   ];
 
   home = {
@@ -63,11 +78,17 @@
     homeDirectory = "/home/ciferkey";
   };
 
+  programs.autojump.enable = true;
+
   programs.bat = {
     enable = true;
     config = {
       theme = "zenburn";
     };
+  };
+
+  programs.chromium = {
+    enable = true;
   };
 
   programs.fish = {
@@ -89,7 +110,27 @@
     ];
     shellAliases = {
      g = "git";
-     rebuild = "sudo nixos-rebuild switch --show-trace";
+     rebuild = "sudo nixos-rebuild switch --flake .#nixos";
+     rehome = "home-manager switch --flake .#ciferkey@nixos";
+     rwin = "sudo efibootmgr -n 0 && sudo reboot now";
+    };
+  };
+
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      settings = {
+        "media.ffmpeg.vaapi.enabled" = "true";
+      };
+    };
+    package = pkgs.firefox.override {
+      cfg = {
+        nativeMessagingHosts = [ 
+          pkgs.plasma5Packages.plasma-browser-integration
+          pkgs.tridactyl-native
+        ]; 
+        speechSynthesisSupport = true;
+      };
     };
   };
 
@@ -117,9 +158,18 @@
     };
   };
 
-  # Enable home-manager
   programs.home-manager.enable = true;
-  
+
+  programs.kitty = {
+    enable = true;
+    font.name = "InconsolataLGC Nerd Font Mono";
+    theme = "Zenburn";
+    settings = {
+      adjust_line_height = 1; # Needed to fix nerd fonts
+      wayland_titlebar_color = "background";
+    };
+  };
+
   programs.navi = {
     enable = true;
   };
@@ -138,7 +188,10 @@
     vimAlias = true;
   };
 
-  programs.nix-index.enable = true;
+  programs.nix-index = {
+    enable = true;
+    enableFishIntegration = true;
+  };
   
   programs.tmux = {
     enable = true;
@@ -155,4 +208,11 @@
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0" # until obsidian gets their act together
+  ];
+
+  services.udiskie.enable = true; # Auto mount usb drives
+
 }
