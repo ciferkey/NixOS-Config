@@ -93,6 +93,7 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.supportedFilesystems = [ "ntfs" ];
 
   # Firmware
   services.fwupd.enable = true;
@@ -162,9 +163,6 @@
     shell = pkgs.fish;
   };
 
-  services.flatpak.enable = true;
-  services.packagekit.enable = true;
-
   # ADB has to be enabled this way https://nixos.wiki/wiki/Android
   programs.adb.enable = true;
 
@@ -175,9 +173,20 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    libsForQt5.ark
+    libsForQt5.breeze-gtk
+    libsForQt5.discover
+    libsForQt5.kio-gdrive
+    libsForQt5.plasma-integration
+    libsForQt5.plasma-nm
+    unstable.libsForQt5.polonium
+    #tailscale-systray
   ];
+
+  services.flatpak.enable = true;
+  services.packagekit.enable = true;
+
+  programs.kdeconnect.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.05";
@@ -198,5 +207,11 @@
   programs.corectrl.enable = true;
 
   zramSwap.enable = true;
+
+  
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
 
 }
