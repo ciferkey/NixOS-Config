@@ -90,7 +90,7 @@
   # Bootloader
   boot.loader.systemd-boot = {
     enable = true;
-    configurationLimit = 5;
+    configurationLimit = 8;
     consoleMode = "auto";
   };
   boot.loader.efi.canTouchEfiVariables = true;
@@ -157,7 +157,7 @@
   users.users.ciferkey = {
     isNormalUser = true;
     description = "ciferkey";
-    extraGroups = [ "adbusers" "networkmanager" "wheel" ];
+    extraGroups = [ "adbusers" "docker" "networkmanager" "wheel" ];
     packages = with pkgs; [
       git
       neovim
@@ -214,6 +214,14 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+  };
+
+  # Virtualization
+  virtualisation = {
+    docker = {
+      enable = true;
+      enableOnBoot = false;
+    };
   };
 
 }

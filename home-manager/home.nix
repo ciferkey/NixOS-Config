@@ -55,6 +55,8 @@
     btop
     cachix
     caffeine-ng
+    dbeaver
+    docker-compose
     discord
     efibootmgr
     freetube
@@ -100,10 +102,6 @@
   programs.fish = {
     enable = true;
     plugins = [
-      {
-        name = "tide";
-        src = pkgs.fishPlugins.tide;
-      }
       { 
         name = "fzf-fish"; 
         src = pkgs.fishPlugins.fzf-fish.src;
