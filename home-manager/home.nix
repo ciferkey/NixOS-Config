@@ -65,11 +65,13 @@
     insomnia
     jellyfin-media-player
     jetbrains.pycharm-professional
+    lutris
     mangohud
     (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
     nixpkgs-review
     nix-update
     obsidian
+    picard
     pocket-casts
     unstable.r2modman
     unzip
