@@ -64,7 +64,7 @@
     fzf
     insomnia
     jellyfin-media-player
-    jetbrains.pycharm-professional
+    unstable.jetbrains.pycharm-professional
     lutris
     mangohud
     (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
@@ -99,6 +99,12 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+  };
+
+  programs.eza = {
+    enable = true;
+    enableAliases = true;
+    git = true;
   };
 
   programs.fish = {
