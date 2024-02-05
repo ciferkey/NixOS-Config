@@ -59,8 +59,9 @@
     docker-compose
     discord
     efibootmgr
-    freetube
     fd
+    #unstable.feishin
+    freetube
     fzf
     insomnia
     jellyfin-media-player
@@ -74,6 +75,7 @@
     picard
     pocket-casts
     unstable.r2modman
+    supersonic
     unzip
     xivlauncher
   ];
@@ -126,9 +128,9 @@
     ];
     shellAliases = {
      g = "git";
-     rebuild = "sudo nixos-rebuild switch --flake .#nixos";
+     rebuild = "sudo nixos-rebuild switch --flake .#nixos --show-trace";
      reflake = "nix flake update";
-     rehome = "home-manager switch --flake .#ciferkey@nixos";
+     rehome = "home-manager switch --flake .#ciferkey@nixos --show-trace";
      rwin = "sudo efibootmgr -n 0 && sudo reboot now";
     };
   };
