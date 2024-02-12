@@ -185,6 +185,8 @@
     #tailscale-systray
   ];
 
+  programs.partition-manager.enable = true;
+
   services.flatpak.enable = true;
   services.packagekit.enable = true;
 
