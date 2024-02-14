@@ -52,7 +52,7 @@
   home.packages = with pkgs; [
     anki
     bottles
-    btop
+    unstable.btop
     cachix
     caffeine-ng
     dbeaver
