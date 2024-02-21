@@ -55,6 +55,7 @@
     unstable.btop
     cachix
     caffeine-ng
+    calibre
     dbeaver
     docker-compose
     discord
