@@ -72,7 +72,7 @@
     (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
     nixpkgs-review
     nix-update
-    obsidian
+    unstable.obsidian # need 1.5.8 to hit stable for electron
     picard
     pocket-casts
     unstable.r2modman
@@ -85,6 +85,8 @@
     username = "ciferkey";
     homeDirectory = "/home/ciferkey";
   };
+
+  programs.atuin.enable = true;
 
   programs.autojump.enable = true;
 
@@ -228,10 +230,6 @@
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0" # until obsidian gets their act together
-  ];
 
   services.udiskie.enable = true; # Auto mount usb drives
 
