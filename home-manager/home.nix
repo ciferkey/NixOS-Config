@@ -67,7 +67,7 @@
     insomnia
     jellyfin-media-player
     unstable.jetbrains.pycharm-professional
-    lutris
+    #lutris
     mangohud
     (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
     nixpkgs-review
@@ -78,6 +78,7 @@
     unstable.r2modman
     supersonic
     unzip
+    winetricks
     xivlauncher
   ];
 

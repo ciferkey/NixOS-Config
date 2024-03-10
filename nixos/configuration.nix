@@ -41,16 +41,6 @@
       #     patches = [ ./change-hello-to-hi.patch ];
       #   });
       # })
-      (final: prev: {
-        r2modman = prev.r2modman.overrideAttrs (old: {
-          src = prev.fetchFromGitHub {
-            owner = "ebkr";
-            repo = "r2modmanplus";
-            rev = "v3.1.45";
-            hash = "sha256-6o6iPDKKqCzt7H0a64HGTvEvwO6hjRh1Drl8o4x+4ew=";
-          };
-        });
-      })
     ];
     # Configure your nixpkgs instance
     config = {
@@ -175,13 +165,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    libsForQt5.ark
-    libsForQt5.breeze-gtk
-    libsForQt5.discover
-    libsForQt5.kio-gdrive
-    libsForQt5.plasma-integration
-    libsForQt5.plasma-nm
-    unstable.libsForQt5.polonium
+    kdePackages.ark
+    kdePackages.breeze-gtk
+    kdePackages.discover
+    kdePackages.kio-gdrive
+    kdePackages.plasma-integration
+    kdePackages.plasma-nm
+    #kdePackages.polonium
     #tailscale-systray
   ];
 
