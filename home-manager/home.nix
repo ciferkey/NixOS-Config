@@ -157,6 +157,14 @@
     };
   };
 
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper.enable = true;
+    settings.git_protocol = "ssh";
+  };
+
+  programs.gh-dash.enable = true;
+
   programs.git = {
     enable = true;
     aliases = {
