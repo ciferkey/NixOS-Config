@@ -64,9 +64,11 @@
     #unstable.feishin
     freetube
     fzf
+    google-cloud-sdk
     insomnia
     jellyfin-media-player
     unstable.jetbrains.pycharm-professional
+    jetbrains.rust-rover
     #lutris
     mangohud
     (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
@@ -76,10 +78,11 @@
     picard
     pocket-casts
     unstable.r2modman
+    rustup
     supersonic
     unzip
     winetricks
-    xivlauncher
+    #xivlauncher
   ];
 
   home = {
@@ -232,6 +235,8 @@
     ];
     terminal = "tmux-256color";
   };
+
+  programs.vscode.enable = true;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
