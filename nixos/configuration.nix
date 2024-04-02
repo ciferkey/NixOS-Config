@@ -154,6 +154,7 @@
     ];
     shell = pkgs.fish;
   };
+  security.pam.services.ciferkey.enableKwallet = true;
 
   # ADB has to be enabled this way https://nixos.wiki/wiki/Android
   programs.adb.enable = true;
