@@ -173,8 +173,12 @@
     kdePackages.plasma-integration
     kdePackages.plasma-nm
     #kdePackages.polonium
+    razergenie
+    #tailscale
     #tailscale-systray
   ];
+
+  #services.tailscale.enable = true;
 
   programs.partition-manager.enable = true;
 
@@ -216,5 +220,4 @@
       enableOnBoot = false;
     };
   };
-
 }
