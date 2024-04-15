@@ -84,6 +84,7 @@
     rustup
     supersonic
     unzip
+    vesktop
     winetricks
     #xivlauncher
   ];
