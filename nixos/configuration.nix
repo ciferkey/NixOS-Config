@@ -1,4 +1,4 @@
-# This is your system's configuration file.
+#u This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
 {
   inputs,
@@ -118,7 +118,12 @@
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
+  services.displayManager = {
+    sddm.enable = true;
+    autoLogin.enable = true;
+    autoLogin.user = "ciferkey";
+  };
+
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
@@ -158,10 +163,6 @@
 
   # ADB has to be enabled this way https://nixos.wiki/wiki/Android
   programs.adb.enable = true;
-
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "ciferkey";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
