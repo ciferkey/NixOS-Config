@@ -77,14 +77,14 @@
     nix-update
     unstable.obsidian # need 1.5.8 to hit stable for electron
     picard
-    poetry
+    #poetry
     pocket-casts
     python3
     unstable.r2modman
     rustup
+    steamtinkerlaunch
     supersonic
     unzip
-    vesktop
     winetricks
     #xivlauncher
   ];
