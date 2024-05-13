@@ -156,7 +156,7 @@
     package = pkgs.firefox.override {
       cfg = {
         nativeMessagingHosts = [ 
-          pkgs.plasma5Packages.plasma-browser-integration
+          pkgs.kdePlamsa.plasma-browser-integration
           pkgs.tridactyl-native
         ]; 
         speechSynthesisSupport = true;

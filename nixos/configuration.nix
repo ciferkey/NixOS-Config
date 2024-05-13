@@ -173,6 +173,7 @@
     kdePackages.kio-gdrive
     kdePackages.plasma-integration
     kdePackages.plasma-nm
+    kdePackages.sddm-kcm
     #kdePackages.polonium
     razergenie
     #tailscale
