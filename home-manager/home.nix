@@ -73,6 +73,7 @@
     #lutris
     mangohud
     (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
+    nh
     nixpkgs-review
     nix-update
     unstable.obsidian # need 1.5.8 to hit stable for electron

@@ -203,8 +203,8 @@
   hardware.steam-hardware.enable = true;
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
-  hardware.openrazer.enable = true;
-  hardware.openrazer.users = [ "ciferkey" ];
+  #hardware.openrazer.enable = true;
+  #hardware.openrazer.users = [ "ciferkey" ];
   programs.corectrl.enable = true;
 
   zramSwap.enable = true;
