@@ -52,7 +52,7 @@
   home.packages = with pkgs; [
     anki
     bottles
-    btop
+    (btop.override {rocmSupport = true;})
     cachix
     caffeine-ng
     calibre
