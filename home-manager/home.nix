@@ -56,9 +56,8 @@
     cachix
     caffeine-ng
     calibre
-    dbeaver
+    dbeaver-bin
     docker-compose
-    discord
     efibootmgr
     fd
     #unstable.feishin
@@ -89,6 +88,7 @@
     unzip
     winetricks
     #xivlauncher
+    vesktop
   ];
 
   home = {
