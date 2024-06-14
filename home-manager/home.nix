@@ -65,6 +65,7 @@
     freetube
     fzf
     google-cloud-sdk
+    goverlay
     insomnia
     jellyfin-media-player
     unstable.jetbrains.pycharm-professional
@@ -85,6 +86,7 @@
     signal-desktop
     steamtinkerlaunch
     supersonic
+    syncthingtray
     unzip
     winetricks
     #xivlauncher

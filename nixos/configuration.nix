@@ -165,7 +165,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    btop.override {rocmSupport = true;}
     kdePackages.ark
     kdePackages.breeze-gtk
     kdePackages.discover
@@ -174,9 +173,9 @@
     kdePackages.plasma-nm
     kdePackages.sddm-kcm
     #kdePackages.polonium
-    razergenie
-    #tailscale
-    #tailscale-systray
+    #razergenie
+    tailscale
+    tailscale-systray
   ];
 
   #services.tailscale.enable = true;
@@ -219,6 +218,13 @@
     docker = {
       enable = true;
       enableOnBoot = false;
+    };
+  };
+
+  services = {
+    syncthing = {
+        enable = true;
+        user = "ciferkey";
     };
   };
 }
