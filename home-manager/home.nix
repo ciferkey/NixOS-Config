@@ -76,10 +76,10 @@
     nh
     nixpkgs-review
     nix-update
-    unstable.obsidian # need 1.5.8 to hit stable for electron
+    obsidian # need 1.5.8 to hit stable for electron
     picard
     poetry
-    pocket-casts
+    #pocket-casts old electron version
     python3
     unstable.r2modman
     rustup
