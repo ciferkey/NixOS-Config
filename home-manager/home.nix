@@ -142,9 +142,9 @@
     ];
     shellAliases = {
      g = "git";
-     rebuild = "sudo nixos-rebuild switch --flake .#nixos --show-trace";
+     rebuild = "nh os switch .";
      reflake = "nix flake update";
-     rehome = "home-manager switch --flake .#ciferkey@nixos --show-trace";
+     rehome = "nh home switch .";
      rwin = "sudo efibootmgr -n 0 && sudo reboot now";
     };
   };
