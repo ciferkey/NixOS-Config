@@ -145,6 +145,7 @@
      rebuild = "nh os switch .";
      reflake = "nix flake update";
      rehome = "nh home switch .";
+     repair = "sudo nix-store --repair --verify --check-contents"
      rwin = "sudo efibootmgr -n 0 && sudo reboot now";
     };
   };
@@ -159,6 +160,7 @@
     package = pkgs.firefox.override {
       cfg = {
         nativeMessagingHosts = [ 
+          pkgs.firefoxpwa
           pkgs.kdePlamsa.plasma-browser-integration
           pkgs.tridactyl-native
         ]; 
