@@ -89,7 +89,7 @@
     syncthingtray
     unzip
     winetricks
-    #xivlauncher
+    xivlauncher
     vesktop
   ];
 
@@ -145,7 +145,7 @@
      rebuild = "nh os switch .";
      reflake = "nix flake update";
      rehome = "nh home switch .";
-     repair = "sudo nix-store --repair --verify --check-contents"
+     repair = "sudo nix-store --repair --verify --check-contents";
      rwin = "sudo efibootmgr -n 0 && sudo reboot now";
     };
   };
