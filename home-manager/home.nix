@@ -77,7 +77,7 @@
     nixpkgs-review
     nix-update
     obsidian # need 1.5.8 to hit stable for electron
-    picard
+    #picard
     poetry
     #pocket-casts old electron version
     python3
