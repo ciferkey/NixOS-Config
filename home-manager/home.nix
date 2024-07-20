@@ -60,15 +60,12 @@
     docker-compose
     efibootmgr
     fd
-    #unstable.feishin
-    flyctl
     freetube
     fzf
-    google-cloud-sdk
-    goverlay
+    #google-cloud-sdk
     insomnia
     jellyfin-media-player
-    unstable.jetbrains.pycharm-professional
+    jetbrains.pycharm-professional
     jetbrains.rust-rover
     #lutris
     mangohud
@@ -81,12 +78,9 @@
     poetry
     #pocket-casts old electron version
     python3
-    unstable.r2modman
     rustup
     signal-desktop
-    steamtinkerlaunch
     supersonic
-    syncthingtray
     unzip
     winetricks
     xivlauncher
