@@ -134,7 +134,6 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -228,4 +227,9 @@
         user = "ciferkey";
     };
   };
+
+  # Fix EDID for monitor on AMD
+  hardware.display.edid.linuxhw."XL2420G_2014" = ["XL2420G" "2014"];
+  hardware.display.outputs."DP-2".edid = "XL2420G_2014.bin";
+  hardware.display.outputs."DP-2".mode = "e";
 }

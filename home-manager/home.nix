@@ -76,7 +76,7 @@
     nh
     nixpkgs-review
     nix-update
-    obsidian # need 1.5.8 to hit stable for electron
+    obsidian
     #picard
     poetry
     #pocket-casts old electron version
@@ -224,6 +224,10 @@
       set mouse=a
       set nu
     '';
+    extraPackages = [
+      pkgs.ripgrep
+      pkgs.wl-clipboard
+    ];
     plugins = [
       pkgs.vimPlugins.vim-nix
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
@@ -254,6 +258,15 @@
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
 
+  services.flameshot.enable = true;
+
   services.udiskie.enable = true; # Auto mount usb drives
 
+  # Fix for udiskie / flame shot not building https://github.com/nix-community/home-manager/issues/2064#issuecomment-887300055
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = [ "graphical-session-pre.target" ];
+    };
+  };
 }
