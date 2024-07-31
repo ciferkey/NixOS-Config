@@ -74,7 +74,6 @@
     nixpkgs-review
     nix-update
     obsidian
-    #picard
     poetry
     #pocket-casts old electron version
     python3
