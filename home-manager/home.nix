@@ -60,6 +60,7 @@
     docker-compose
     efibootmgr
     fd
+    firefoxpwa
     freetube
     fzf
     #google-cloud-sdk
@@ -76,6 +77,7 @@
     obsidian
     poetry
     #pocket-casts old electron version
+    protonup-qt
     python3
     rustup
     signal-desktop
@@ -150,13 +152,13 @@
         "media.ffmpeg.vaapi.enabled" = "true";
       };
     };
+    nativeMessagingHosts = [ 
+      pkgs.firefoxpwa
+      pkgs.kdePackages.plasma-browser-integration
+      pkgs.tridactyl-native
+    ]; 
     package = pkgs.firefox.override {
       cfg = {
-        nativeMessagingHosts = [ 
-          pkgs.firefoxpwa
-          pkgs.kdePlamsa.plasma-browser-integration
-          pkgs.tridactyl-native
-        ]; 
         speechSynthesisSupport = true;
       };
     };

@@ -164,7 +164,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    firefoxpwa
     kdePackages.ark
     kdePackages.breeze-gtk
     kdePackages.discover
