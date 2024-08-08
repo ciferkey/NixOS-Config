@@ -51,6 +51,7 @@
 
   home.packages = with pkgs; [
     anki
+    appimage-run
     bottles
     (btop.override {rocmSupport = true;})
     cachix
@@ -70,6 +71,7 @@
     jetbrains.rust-rover
     #lutris
     mangohud
+    nexusmods-app
     (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
     nh
     nixpkgs-review

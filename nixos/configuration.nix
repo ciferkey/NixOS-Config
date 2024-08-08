@@ -177,6 +177,8 @@
     tailscale-systray
   ];
 
+  programs.appimage.binfmt = true;
+
   #services.tailscale.enable = true;
 
   programs.partition-manager.enable = true;
@@ -195,8 +197,8 @@
     remotePlay.openFirewall = true;
     gamescopeSession.enable = true;
   };
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   hardware.steam-hardware.enable = true;
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
