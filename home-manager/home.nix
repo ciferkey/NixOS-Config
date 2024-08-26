@@ -67,8 +67,8 @@
     #google-cloud-sdk
     insomnia
     jellyfin-media-player
-    jetbrains.pycharm-professional
-    jetbrains.rust-rover
+    #jetbrains.pycharm-professional
+    #jetbrains.rust-rover
     #lutris
     mangohud
     nexusmods-app
