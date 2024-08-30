@@ -67,7 +67,7 @@
     #google-cloud-sdk
     insomnia
     jellyfin-media-player
-    #jetbrains.pycharm-professional
+    jetbrains.pycharm-professional
     #jetbrains.rust-rover
     #lutris
     mangohud
@@ -85,6 +85,7 @@
     signal-desktop
     supersonic
     unzip
+    uv
     winetricks
     xivlauncher
     vesktop
