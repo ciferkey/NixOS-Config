@@ -1,4 +1,4 @@
-#u This is your system's configuration file.
+#u This is your system's configuration file.k
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
 {
   inputs,
@@ -195,6 +195,7 @@
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
     gamescopeSession.enable = true;
   };
   hardware.graphics.enable = true;
@@ -226,6 +227,8 @@
   hardware.display.edid.linuxhw."XL2420G_2014" = ["XL2420G" "2014"];
   hardware.display.outputs."DP-2".edid = "XL2420G_2014.bin";
   hardware.display.outputs."DP-2".mode = "e";
+
+  services.fstrim.enable = true;
 
   services.ollama = {
     enable = true;
