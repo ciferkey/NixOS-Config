@@ -230,8 +230,8 @@
 
   services.fstrim.enable = true;
 
-  services.ollama = {
-    enable = true;
-    acceleration = "rocm";
-  };
+  #services.ollama = {
+  #  enable = true;
+  #  acceleration = "rocm";
+  #};
 }
