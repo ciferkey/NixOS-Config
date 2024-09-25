@@ -61,6 +61,7 @@
     docker-compose
     efibootmgr
     fd
+    feishin
     firefoxpwa
     freetube
     fzf
@@ -83,7 +84,6 @@
     python3
     rustup
     signal-desktop
-    supersonic
     unzip
     uv
     winetricks
