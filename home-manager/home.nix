@@ -78,10 +78,13 @@
     nixpkgs-review
     nix-update
     obsidian
+    parsec-bin
     poetry
     #pocket-casts old electron version
     protonup-qt
     python3
+    ripgrep
+    ripgrep-all
     rustup
     signal-desktop
     unzip
