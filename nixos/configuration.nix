@@ -206,6 +206,7 @@
   #hardware.openrazer.enable = true;
   #hardware.openrazer.users = [ "ciferkey" ];
   programs.corectrl.enable = true;
+  programs.streamcontroller.enable = true;
 
   zramSwap.enable = true;
 
