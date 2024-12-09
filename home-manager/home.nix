@@ -73,7 +73,8 @@
     #lutris
     mangohud
     nexusmods-app
-    (nerdfonts.override { fonts = [ "Hack" "InconsolataLGC" ]; })
+    nerd-fonts.inconsolata-lgc
+    nerd-fonts.hack
     nh
     nixpkgs-review
     nix-update
@@ -206,8 +207,8 @@
 
   programs.kitty = {
     enable = true;
-    font.name = "InconsolataLGC Nerd Font Mono";
-    theme = "Zenburn";
+    font.name = "Inconsolata LGC Nerd Font Mono";
+    themeFile = "Zenburn";
     settings = {
       adjust_line_height = 1; # Needed to fix nerd fonts
       wayland_titlebar_color = "background";
@@ -222,6 +223,7 @@
     defaultEditor = true;
     enable = true;
     extraConfig = ''
+      colorscheme zenburn
       set mouse=a
       set nu
     '';
@@ -232,6 +234,7 @@
     plugins = [
       pkgs.vimPlugins.vim-nix
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+      pkgs.vimPlugins.zenburn
     ];
     vimAlias = true;
   };
