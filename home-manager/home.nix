@@ -262,8 +262,6 @@
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
 
-  services.flameshot.enable = true;
-
   services.udiskie.enable = true; # Auto mount usb drives
 
   # Fix for udiskie / flame shot not building https://github.com/nix-community/home-manager/issues/2064#issuecomment-887300055

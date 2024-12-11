@@ -82,7 +82,8 @@
     consoleMode = "auto";
   };
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_11;
   boot.supportedFilesystems = [ "ntfs" ];
 
   # Firmware
