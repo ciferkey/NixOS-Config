@@ -149,7 +149,7 @@
   users.users.ciferkey = {
     isNormalUser = true;
     description = "ciferkey";
-    extraGroups = [ "adbusers" "docker" "networkmanager" "wheel" ];
+    extraGroups = [ "adbusers" "camera" "docker" "networkmanager" "wheel" ];
     packages = with pkgs; [
       git
       neovim
@@ -167,6 +167,7 @@
     kdePackages.ark
     kdePackages.breeze-gtk
     kdePackages.discover
+    kdePackages.kamera
     kdePackages.kio-gdrive
     kdePackages.plasma-integration
     kdePackages.plasma-nm
@@ -233,4 +234,6 @@
   #  enable = true;
   #  acceleration = "rocm";
   #};
+
+  programs.gphoto2.enable = true;
 }

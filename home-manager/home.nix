@@ -57,6 +57,7 @@
     cachix
     caffeine-ng
     calibre
+    darktable
     dbeaver-bin
     docker-compose
     efibootmgr
