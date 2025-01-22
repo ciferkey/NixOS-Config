@@ -62,36 +62,27 @@
     docker-compose
     efibootmgr
     fd
-    feishin
+    #feishin
     firefoxpwa
-    freetube
     fzf
-    #google-cloud-sdk
-    insomnia
     jellyfin-media-player
     jetbrains.pycharm-professional
     #jetbrains.rust-rover
     #lutris
     mangohud
-    nexusmods-app
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
     nh
     nixpkgs-review
     nix-update
     obsidian
-    parsec-bin
-    poetry
-    #pocket-casts old electron version
     protonup-qt
     python3
     ripgrep
     ripgrep-all
     rustup
-    signal-desktop
     unzip
     uv
-    winetricks
     xivlauncher
     vesktop
   ];
@@ -149,7 +140,6 @@
      reflake = "nix flake update";
      rehome = "nh home switch .";
      repair = "sudo nix-store --repair --verify --check-contents";
-     rwin = "sudo efibootmgr -n 0 && sudo reboot now";
     };
   };
 
