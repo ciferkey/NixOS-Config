@@ -65,6 +65,7 @@
     #feishin
     firefoxpwa
     fzf
+    golden-cheetah
     jellyfin-media-player
     jetbrains.pycharm-professional
     #jetbrains.rust-rover
@@ -81,6 +82,7 @@
     ripgrep
     ripgrep-all
     rustup
+    signal-desktop
     unzip
     uv
     xivlauncher
