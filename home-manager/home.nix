@@ -50,6 +50,7 @@
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
+    android-studio
     anki
     appimage-run
     bottles
@@ -256,12 +257,4 @@
   home.stateVersion = "23.05";
 
   services.udiskie.enable = true; # Auto mount usb drives
-
-  # Fix for udiskie / flame shot not building https://github.com/nix-community/home-manager/issues/2064#issuecomment-887300055
-  systemd.user.targets.tray = {
-    Unit = {
-      Description = "Home Manager System Tray";
-      Requires = [ "graphical-session-pre.target" ];
-    };
-  };
 }
