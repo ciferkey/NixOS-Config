@@ -88,6 +88,7 @@
     uv
     xivlauncher
     vesktop
+    inputs.zen-browser.packages."${system}".beta
   ];
 
   home = {
