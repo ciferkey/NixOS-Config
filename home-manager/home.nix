@@ -62,6 +62,8 @@
     dbeaver-bin
     docker-compose
     efibootmgr
+    ente-auth
+    freetube
     fd
     #feishin
     firefoxpwa
