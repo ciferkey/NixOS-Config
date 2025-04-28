@@ -58,6 +58,7 @@
     cachix
     caffeine-ng
     calibre
+    claude-code
     darktable
     dbeaver-bin
     docker-compose
@@ -80,6 +81,7 @@
     nixpkgs-review
     nix-update
     obsidian
+    pocket-casts
     protonup-qt
     python3
     ripgrep
