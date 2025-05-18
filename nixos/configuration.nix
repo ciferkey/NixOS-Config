@@ -130,8 +130,14 @@
     variant = "";
   };
 
-  # Enable CUPS to print documents.
+  # Enable printing and scanning
   services.printing.enable = true;
+  hardware.sane.extraBackends = [ 
+    pkgs.epsonscan2.override {
+      withNonFreePlugins = true;
+      withGui = false;
+    }
+  ];
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
