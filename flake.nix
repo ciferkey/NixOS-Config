@@ -21,10 +21,6 @@
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
     # nix-colors.url = "github:misterio77/nix-colors";
-
-
-    # Until https://github.com/NixOS/nixpkgs/issues/327982#issuecomment-2509175839 is closed
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 
   outputs = {

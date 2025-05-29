@@ -63,7 +63,7 @@
     dbeaver-bin
     docker-compose
     efibootmgr
-    ente-auth
+    #ente-auth
     freetube
     fd
     #feishin
@@ -93,7 +93,6 @@
     uv
     xivlauncher
     vesktop
-    inputs.zen-browser.packages."${system}".beta
   ];
 
   home = {
@@ -200,6 +199,19 @@
     userEmail = "ciferkey@gmail.com";
     extraConfig = {
       pull.rebase = true;
+    };
+  };
+
+  programs.hexchat = {
+    enable = true;
+    settings = {
+      irc_nick1 = "ciferkey";
+      irc_username = "ciferkey";
+    };
+    theme = pkgs.fetchzip {
+      url = "https://dl.hexchat.net/themes/Zenburn.hct#Zenburn.zip";
+      sha256 = "sha256-VIv+IeCwq+jq+F5yyz5J3CSCvQaNh07uc81kVNMqxsY=";
+      stripRoot = false;
     };
   };
 
