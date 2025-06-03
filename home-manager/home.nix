@@ -63,7 +63,7 @@
     dbeaver-bin
     docker-compose
     efibootmgr
-    #ente-auth
+    ente-auth
     freetube
     fd
     #feishin
