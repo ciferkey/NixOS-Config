@@ -210,8 +210,16 @@
   hardware.steam-hardware.enable = true;
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
-  #hardware.openrazer.enable = true;
-  #hardware.openrazer.users = [ "ciferkey" ];
+  # Controller stuff https://codeberg.org/fabiscafe/game-devices-udev#nixos
+  services = {
+    udev = {
+      packages = with pkgs; [
+        game-devices-udev-rules
+      ];
+    };
+  };
+  hardware.uinput.enable = true;
+
 
   zramSwap.enable = true;
 
