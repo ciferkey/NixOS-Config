@@ -82,7 +82,7 @@
     consoleMode = "auto";
   };
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_6; # https://discourse.nixos.org/t/possibly-graphical-problems-with-upgrading-from-24-11-to-25-05/65135/6
   boot.supportedFilesystems = [ "ntfs" ];
 
   # Firmware
@@ -250,4 +250,7 @@
   #};
 
   programs.gphoto2.enable = true;
+
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
 }
