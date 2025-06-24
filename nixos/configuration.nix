@@ -132,12 +132,20 @@
 
   # Enable printing and scanning
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.gutenprint pkgs.epson-escpr ];
+  hardware.sane.openFirewall = true;
   hardware.sane.extraBackends = [ 
     pkgs.epsonscan2.override {
       withNonFreePlugins = true;
       withGui = false;
     }
+    pkgs.epkowa
   ];
+  services.avahi = { # Enable auto detction for printers
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -155,7 +163,15 @@
   users.users.ciferkey = {
     isNormalUser = true;
     description = "ciferkey";
-    extraGroups = [ "adbusers" "camera" "docker" "networkmanager" "wheel" ];
+    extraGroups = [ 
+      "adbusers"
+      "camera"
+      "docker"
+      "lp" # for combo scanner + printer
+      "networkmanager"
+      "scanner"
+      "wheel" 
+    ];
     packages = with pkgs; [
       git
       neovim
@@ -178,6 +194,7 @@
     kdePackages.plasma-integration
     kdePackages.plasma-nm
     kdePackages.sddm-kcm
+    naps2
     #kdePackages.polonium
     #razergenie
     tailscale
@@ -253,4 +270,6 @@
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
+  programs.streamcontroller.enable = true;
 }

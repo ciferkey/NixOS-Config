@@ -75,7 +75,6 @@
     #jetbrains.rust-rover
     #lutris
     mangohud
-    naps2
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
     nh
@@ -255,7 +254,7 @@
     enable = true;
     enableFishIntegration = true;
   };
-  
+
   programs.tmux = {
     enable = true;
     mouse = true;
