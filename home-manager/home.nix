@@ -50,7 +50,7 @@
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    android-studio
+    #android-studio
     anki
     appimage-run
     bottles
@@ -59,7 +59,7 @@
     caffeine-ng
     calibre
     claude-code
-    darktable
+    #darktable
     dbeaver-bin
     docker-compose
     efibootmgr
@@ -71,7 +71,7 @@
     fzf
     golden-cheetah
     jellyfin-media-player
-    jetbrains.pycharm-professional
+    #jetbrains.pycharm-professional
     #jetbrains.rust-rover
     #lutris
     mangohud
