@@ -226,6 +226,15 @@
     };
   };
 
+  programs.ghostty = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      font-family = "Inconsolata LGC Nerd Font Mono";
+      theme = "Zenburn";
+    };
+  };
+
   programs.navi = {
     enable = true;
   };
