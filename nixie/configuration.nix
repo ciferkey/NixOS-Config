@@ -19,7 +19,6 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
-    ./desktop.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -82,14 +81,15 @@
     configurationLimit = 8;
     consoleMode = "auto";
   };
-  boot.kernelPackages = pkgs.linuxPackages_6_6; # https://discourse.nixos.org/t/possibly-graphical-problems-with-upgrading-from-24-11-to-25-05/65135/6
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Firmware
   services.fwupd.enable = true;
   hardware.enableAllFirmware = true;
 
   # Enable networking
-  networking.hostName = "nixos";
+  networking.hostName = "nixie";
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
 
@@ -154,6 +154,8 @@
     ];
     packages = with pkgs; [
       git
+      nh
+      home-manager
       neovim
     ];
     shell = pkgs.fish;
