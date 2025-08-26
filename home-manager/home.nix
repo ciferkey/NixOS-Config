@@ -132,6 +132,10 @@
         name = "fzf-fish"; 
         src = pkgs.fishPlugins.fzf-fish.src;
       }
+      { 
+        name = "tide"; 
+        src = pkgs.fishPlugins.tide.src;
+      }
       {
         name = "tmux";
         src = pkgs.fetchFromGitHub {
