@@ -51,7 +51,7 @@
 
   home.packages = with pkgs; [
     #android-studio
-    anki
+    #anki
     appimage-run
     bitwarden-desktop
     bottles

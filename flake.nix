@@ -17,6 +17,12 @@
 
     # TODO: Add any other flake you might need
     hardware.url = "github:nixos/nixos-hardware/master";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+
+      # Optional but recommended to limit the size of your system closure.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
@@ -28,6 +34,7 @@
     nixpkgs,
     home-manager,
     nixos-hardware,
+    lanzaboote,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -74,6 +81,7 @@
         modules = [
           # > Our main nixos configuration file <
           nixos-hardware.nixosModules.framework-amd-ai-300-series
+          lanzaboote.nixosModules.lanzaboote
           ./nixie/configuration.nix
         ];
       };
