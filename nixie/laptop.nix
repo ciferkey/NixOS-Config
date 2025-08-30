@@ -23,4 +23,14 @@
     pkiBundle = "/var/lib/sbctl";
   };
 
+  # Replace power-profile-daemon with tuned. Fedora uses it by default now
+  # https://fedoraproject.org/wiki/Changes/TunedAsTheDefaultPowerProfileManagementDaemon
+  services.tlp.enable = false; # the nixos-hardware module will turn this on, when Framework recommends _not_ using tlp.
+  #services.power-profiles-daemon.enable = true;
+  services.tuned = {
+    enable = true;
+    settings.dynamic_tuning = true;
+    #ppdSettings.main.default = "powersave";
+  };
+
 }
