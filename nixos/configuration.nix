@@ -147,9 +147,12 @@
     description = "ciferkey";
     extraGroups = [ 
       "adbusers"
-      "camera"
+      "camera" 
+      "dialout" # Allow access to serial device
       "docker"
+      "lp"
       "networkmanager"
+      "scanner"
       "wheel" 
     ];
     packages = with pkgs; [
@@ -176,6 +179,11 @@
     kdePackages.sddm-kcm
     tailscale
     tailscale-systray
+    # Scanner
+    sane-backends
+    sane-frontends
+    hplip           # HP Linux Imaging and Printing
+    simple-scan     # or xsane for a more advanced GUI
   ];
 
   services.tailscale.enable = true;
@@ -235,4 +243,11 @@
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
+  # Scanning
+  hardware.sane.enable = true;
+  hardware.sane.extraBackends = [ pkgs.hplipWithPlugin ];
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+
 }

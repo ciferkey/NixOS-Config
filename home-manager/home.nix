@@ -53,6 +53,7 @@
     #android-studio
     #anki
     appimage-run
+    arduino-ide
     bitwarden-desktop
     bottles
     (btop.override {rocmSupport = true;})
@@ -89,6 +90,7 @@
     ripgrep-all
     rustup
     signal-desktop
+    thunderbird
     unzip
     uv
     xivlauncher
