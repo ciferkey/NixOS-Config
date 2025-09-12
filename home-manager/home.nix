@@ -290,4 +290,14 @@
   home.stateVersion = "23.05";
 
   services.udiskie.enable = true; # Auto mount usb drives
+
+  # Auto cleanup home manager generations, since I do not run home manager as a nix module.
+  services.home-manager = {
+    autoExpire = {
+      enable = true;
+      store.cleanup = true;
+      store.options = "--delete-older-than 14d";
+      timestamp = "-14 days";
+    };
+  };
 }

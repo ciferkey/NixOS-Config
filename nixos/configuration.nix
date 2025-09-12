@@ -177,8 +177,8 @@
     kdePackages.plasma-integration
     kdePackages.plasma-nm
     kdePackages.sddm-kcm
-    tailscale
-    tailscale-systray
+    #tailscale
+    #tailscale-systray
     # Scanner
     sane-backends
     sane-frontends
@@ -186,7 +186,7 @@
     simple-scan     # or xsane for a more advanced GUI
   ];
 
-  services.tailscale.enable = true;
+  #services.tailscale.enable = true;
 
   programs.partition-manager.enable = true;
 
