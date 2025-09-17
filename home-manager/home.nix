@@ -72,8 +72,8 @@
     firefoxpwa
     fzf
     golden-cheetah
-    jellyfin-media-player
-    #jetbrains.pycharm-professional
+    #jellyfin-media-player qtwebengine has a CVE
+    jetbrains.pycharm-professional
     #jetbrains.rust-rover
     #lutris
     mangohud
@@ -154,6 +154,7 @@
      reflake = "nix flake update";
      rehome = "nh home switch .";
      repair = "sudo nix-store --repair --verify --check-contents";
+     ks = "kitten ssh";
     };
   };
 
