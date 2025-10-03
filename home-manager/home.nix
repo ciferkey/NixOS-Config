@@ -61,25 +61,30 @@
     caffeine-ng
     calibre
     claude-code
+    cura-appimage
     #darktable
     dbeaver-bin
     docker-compose
     efibootmgr
     ente-auth
+    freecad
     freetube
     fd
     #feishin
     firefoxpwa
+    freetube
     fzf
     golden-cheetah
     #jellyfin-media-player qtwebengine has a CVE
     jetbrains.pycharm-professional
     #jetbrains.rust-rover
+    kdePackages.kasts
     #lutris
     mangohud
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
     nh
+    nix-du
     nixpkgs-review
     nix-update
     obsidian
