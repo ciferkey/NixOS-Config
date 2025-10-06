@@ -88,6 +88,7 @@
     nixpkgs-review
     nix-update
     obsidian
+    picard
     pocket-casts
     protonup-qt
     python3
