@@ -57,6 +57,7 @@
     bitwarden-desktop
     bottles
     (btop.override {rocmSupport = true;})
+    cargo-generate
     cachix
     caffeine-ng
     calibre
@@ -66,6 +67,7 @@
     dbeaver-bin
     docker-compose
     efibootmgr
+    esp-generate
     ente-auth
     freecad
     freetube
@@ -74,10 +76,9 @@
     firefoxpwa
     freetube
     fzf
-    golden-cheetah
     #jellyfin-media-player qtwebengine has a CVE
     jetbrains.pycharm-professional
-    #jetbrains.rust-rover
+    jetbrains.rust-rover
     kdePackages.kasts
     #lutris
     mangohud
@@ -89,6 +90,7 @@
     nix-update
     obsidian
     picard
+    pkg-config # For rustup
     pocket-casts
     protonup-qt
     python3
