@@ -82,7 +82,8 @@
     configurationLimit = 8;
     consoleMode = "auto";
   };
-  boot.kernelPackages = pkgs.linuxPackages_6_6; # https://discourse.nixos.org/t/possibly-graphical-problems-with-upgrading-from-24-11-to-25-05/65135/6
+  #boot.kernelPackages = pkgs.linuxPackages_6_6; # https://discourse.nixos.org/t/possibly-graphical-problems-with-upgrading-from-24-11-to-25-05/65135/6
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Firmware
   services.fwupd.enable = true;
