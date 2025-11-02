@@ -76,6 +76,7 @@
     firefoxpwa
     freetube
     fzf
+    gnucash
     #jellyfin-media-player qtwebengine has a CVE
     jetbrains.pycharm-professional
     jetbrains.rust-rover
