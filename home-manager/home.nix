@@ -92,7 +92,6 @@
     obsidian
     picard
     pkg-config # For rustup
-    pocket-casts
     protonup-qt
     python3
     ripgrep
@@ -124,6 +123,16 @@
 
   programs.chromium = {
     enable = true;
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      line-numbers = true;
+      side-by-side = true;
+      syntax-theme = "zenburn";
+    };
   };
 
   programs.direnv = {
@@ -196,25 +205,23 @@
 
   programs.git = {
     enable = true;
-    aliases = {
-      cam = "commit -am";
-      ch = "checkout HEAD --";
-      d = "-p diff";
-      lom = "pull origin master";
-      pom = "push origin master";
-      rh = "reset --hard HEAD";
-      s = "status";
-    };
-    delta.enable = true;
-    delta.options = {
-      line-numbers = true;
-      side-by-side = true;
-      syntax-theme = "zenburn";
-    };
-    userName  = "ciferkey";
-    userEmail = "ciferkey@gmail.com";
-    extraConfig = {
-      pull.rebase = true;
+    settings = {
+      aliases = {
+        cam = "commit -am";
+        ch = "checkout HEAD --";
+        d = "-p diff";
+        lom = "pull origin master";
+        pom = "push origin master";
+        rh = "reset --hard HEAD";
+        s = "status";
+      };
+      user = {
+        name  = "ciferkey";
+        email = "ciferkey@gmail.com";
+      };
+      extraConfig = {
+        pull.rebase = true;
+      };
     };
   };
 
