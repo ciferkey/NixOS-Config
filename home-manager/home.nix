@@ -67,6 +67,7 @@
     dbeaver-bin
     docker-compose
     efibootmgr
+    espflash
     esp-generate
     ente-auth
     freecad
@@ -76,6 +77,7 @@
     firefoxpwa
     freetube
     fzf
+    gcc # for rust
     gnucash
     #jellyfin-media-player qtwebengine has a CVE
     jetbrains.pycharm-professional
@@ -206,7 +208,7 @@
   programs.git = {
     enable = true;
     settings = {
-      aliases = {
+      alias = {
         cam = "commit -am";
         ch = "checkout HEAD --";
         d = "-p diff";
