@@ -16,7 +16,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # TODO: Add any other flake you might need
-    hardware.url = "github:nixos/nixos-hardware/master";
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.2";
 
