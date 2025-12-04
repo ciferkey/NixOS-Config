@@ -7,6 +7,8 @@
   ...
 }: {
 
+  networking.hostName = "nixie";
+
   # For hibernate to work with swapfile on BRTFS in LUKS
   boot.initrd.systemd.enable = true;
   swapDevices = [{
