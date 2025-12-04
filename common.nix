@@ -36,8 +36,9 @@
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  # Set your time zone.
-  time.timeZone = "America/New_York";
+  # Set the time zone automatically based on rough location, once, at startup.
+  time.timeZone = null;
+  services.tzupdate.enable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
