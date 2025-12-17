@@ -258,6 +258,10 @@
     settings = {
       font-family = "Inconsolata LGC Nerd Font Mono";
       theme = "Zenburn";
+      keybind = [
+        # https://ghostty.org/docs/config/keybind/reference#toggle_quick_terminal
+        "global:super+a=toggle_quick_terminal"
+      ];
     };
   };
 
@@ -294,6 +298,7 @@
     enable = true;
     mouse = true;
     plugins = with pkgs; [
+      tmuxPlugins.better-mouse-mode
       tmuxPlugins.resurrect
       tmuxPlugins.continuum
     ];
