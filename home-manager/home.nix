@@ -68,7 +68,6 @@
     docker-compose
     efibootmgr
     espflash
-    esp-generate
     ente-auth
     freecad
     freetube
@@ -77,7 +76,6 @@
     firefoxpwa
     freetube
     fzf
-    gcc # for rust
     gnucash
     #jellyfin-media-player qtwebengine has a CVE
     jetbrains.pycharm-professional
@@ -98,13 +96,19 @@
     python3
     ripgrep
     ripgrep-all
-    rustup
     signal-desktop
     thunderbird
     unzip
     uv
     xivlauncher
     vesktop
+
+    #rust
+    rustc
+    cargo
+    rust-analyzer
+    clippy
+    rustfmt
   ];
 
   home = {
