@@ -123,11 +123,10 @@
     kdePackages.plasma-integration
     kdePackages.plasma-nm
     kdePackages.sddm-kcm
-    #tailscale
-    #tailscale-systray
+    tailscale-systray
   ];
 
-  #services.tailscale.enable = true;
+  services.tailscale.enable = true;
 
   programs.partition-manager.enable = true;
 
