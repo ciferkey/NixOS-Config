@@ -63,7 +63,7 @@
     calibre
     claude-code
     cura-appimage
-    #darktable
+    darktable
     dbeaver-bin
     docker-compose
     efibootmgr
@@ -79,7 +79,6 @@
     gnucash
     #jellyfin-media-player qtwebengine has a CVE
     jetbrains.pycharm-professional
-    jetbrains.rust-rover
     kdePackages.kasts
     #lutris
     mangohud
@@ -91,7 +90,6 @@
     nix-update
     obsidian
     picard
-    pkg-config # For rustup
     protonup-qt
     python3
     ripgrep
@@ -102,13 +100,6 @@
     uv
     xivlauncher
     vesktop
-
-    #rust
-    rustc
-    cargo
-    rust-analyzer
-    clippy
-    rustfmt
   ];
 
   home = {
