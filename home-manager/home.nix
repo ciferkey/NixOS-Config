@@ -137,6 +137,11 @@
     nix-direnv.enable = true;
   };
 
+  programs.element-desktop = {
+    enable = true;
+  };
+
+
   programs.eza = {
     enable = true;
     git = true;
@@ -257,6 +262,7 @@
         # https://ghostty.org/docs/config/keybind/reference#toggle_quick_terminal
         "global:super+a=toggle_quick_terminal"
       ];
+      quick-terminal-size = "50%";
     };
   };
 
