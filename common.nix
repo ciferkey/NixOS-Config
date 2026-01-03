@@ -60,7 +60,10 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager = {
-    sddm.enable = true;
+    sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
     autoLogin.enable = true;
     autoLogin.user = "ciferkey";
   };
@@ -107,7 +110,11 @@
     ];
     shell = pkgs.fish;
   };
-  security.pam.services.ciferkey.enableKwallet = true;
+  security.pam.services = {
+    ciferkey.enableKwallet = true;
+    login.u2fAuth = true;
+    sudo.u2fAuth = true;
+  };
 
   # ADB has to be enabled this way https://nixos.wiki/wiki/Android
   programs.adb.enable = true;
@@ -150,16 +157,16 @@
   hardware.steam-hardware.enable = true;
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
-  # Controller stuff https://codeberg.org/fabiscafe/game-devices-udev#nixos
   services = {
     udev = {
       packages = with pkgs; [
+        # Controller stuff https://codeberg.org/fabiscafe/game-devices-udev#nixos
         game-devices-udev-rules
+        yubikey-personalization
       ];
     };
   };
   hardware.uinput.enable = true;
-
 
   zramSwap.enable = true;
 
@@ -183,4 +190,10 @@
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
+  # Enable mdns for .local domains
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+  };
 }
