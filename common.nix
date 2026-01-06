@@ -112,6 +112,7 @@
   };
   security.pam.services = {
     ciferkey.enableKwallet = true;
+    sddm.kwallet.enable = true; # Fix to allow SDDM to start KWallet properly
     login.u2fAuth = true;
     sudo.u2fAuth = true;
   };

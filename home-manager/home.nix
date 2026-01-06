@@ -77,7 +77,7 @@
     freetube
     fzf
     gnucash
-    #jellyfin-media-player qtwebengine has a CVE
+    jellyfin-media-player 
     jetbrains.pycharm-professional
     kdePackages.kasts
     #lutris
