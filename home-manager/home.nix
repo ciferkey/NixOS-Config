@@ -98,7 +98,7 @@
     thunderbird
     unzip
     uv
-    xivlauncher
+    #xivlauncher
     vesktop
   ];
 

@@ -102,6 +102,7 @@
       "wheel" 
     ];
     packages = with pkgs; [
+      android-tools
       git
       home-manager
       neovim
@@ -118,9 +119,6 @@
     login.u2fAuth = true;
     sudo.u2fAuth = true;
   };
-
-  # ADB has to be enabled this way https://nixos.wiki/wiki/Android
-  programs.adb.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
