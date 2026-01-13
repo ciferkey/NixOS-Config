@@ -72,7 +72,7 @@
     freecad
     freetube
     fd
-    #feishin
+    feishin
     firefoxpwa
     freetube
     fzf
