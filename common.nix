@@ -64,8 +64,7 @@
       enable = true;
       wayland.enable = true;
     };
-    autoLogin.enable = true;
-    autoLogin.user = "ciferkey";
+    autoLogin.enable = false;
   };
 
   services.desktopManager.plasma6.enable = true;
@@ -112,7 +111,10 @@
   };
   security.pam.services = {
     ciferkey.enableKwallet = true;
-    sddm.kwallet.enable = true; # Fix to allow SDDM to start KWallet properly
+    sddm.kwallet = {
+      enable = true; # Fix to allow SDDM to start KWallet properly
+      forceRun = true;
+    };
     login.u2fAuth = true;
     sudo.u2fAuth = true;
   };
