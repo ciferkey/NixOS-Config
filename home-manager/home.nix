@@ -50,10 +50,8 @@
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    #android-studio
     #anki
     appimage-run
-    arduino-ide
     bitwarden-desktop
     bottles
     (btop.override {rocmSupport = true;})
@@ -69,7 +67,7 @@
     efibootmgr
     espflash
     ente-auth
-    freecad
+    #freecad
     freetube
     fd
     feishin
@@ -78,7 +76,6 @@
     fzf
     gnucash
     jellyfin-media-player 
-    jetbrains.pycharm-professional
     kdePackages.kasts
     #lutris
     mangohud
