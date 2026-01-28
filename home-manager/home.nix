@@ -55,26 +55,20 @@
     bitwarden-desktop
     bottles
     (btop.override {rocmSupport = true;})
-    cargo-generate
     cachix
     caffeine-ng
     calibre
     claude-code
     cura-appimage
     darktable
-    dbeaver-bin
     docker-compose
     efibootmgr
-    espflash
     ente-auth
-    #freecad
     freetube
     fd
     feishin
-    firefoxpwa
     freetube
     fzf
-    gnucash
     jellyfin-media-player 
     kdePackages.kasts
     #lutris
