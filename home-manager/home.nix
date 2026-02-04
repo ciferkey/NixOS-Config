@@ -299,6 +299,11 @@
 
   programs.vscode.enable = true;
 
+  programs.zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
