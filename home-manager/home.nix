@@ -59,7 +59,7 @@
     cachix
     caffeine-ng
     calibre
-    claude-code
+    claude-code-bin
     cura-appimage
     darktable
     docker-compose
