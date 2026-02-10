@@ -9,15 +9,27 @@
   ...
 }: {
   
-  # Enable flakes and automatically clean up the nix store
-  nix.settings = {
-    auto-optimise-store = true;
-    experimental-features = "nix-command flakes";
-  };
-  nix.gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
+
+  nix = {
+    # This will add each flake input as a registry
+    # To make nix3 commands consistent with your flake
+    channel.enable = false;
+
+    # This will additionally add your inputs to the system's legacy channels
+    # Making legacy nix commands consistent as well
+    registry.nixpkgs.flake = inputs.nixpkgs;
+    nixPath = [ "nixpkgs=flake:nixpkgs" ];
+
+    # Enable flakes and automatically clean up the nix store
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = "nix-command flakes";
+    };
+    gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 14d";
+    };
   };
 
   # Bootloader
