@@ -115,6 +115,7 @@
     profiles.default = {
       settings = {
         "media.ffmpeg.vaapi.enabled" = "true";
+        "extensions.formautofill.creditCards.enabled" = false;  # Disable credit card autofill, so I can use bitwarden instead.
       };
     };
     nativeMessagingHosts = [ 

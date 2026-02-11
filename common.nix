@@ -139,7 +139,6 @@
       git
       home-manager
       neovim
-      nh
     ];
     shell = pkgs.fish;
   };
@@ -147,6 +146,10 @@
     ciferkey.enableKwallet = true;
     sddm.kwallet = {
       enable = true; # Fix to allow SDDM to start KWallet properly
+      forceRun = true;
+    };
+    kde.kwallet =  {
+      enable = true; # Allow lockscreen password to also start KWallet
       forceRun = true;
     };
     login.u2fAuth = true;
