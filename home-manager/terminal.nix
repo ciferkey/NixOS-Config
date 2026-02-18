@@ -6,6 +6,10 @@
   pkgs,
   ...
 }: {
+
+  # Enable integration here, rather than for every potential program.
+  home.shell.enableFishIntegration = true;
+
   programs.atuin.enable = true;
 
   programs.bat = {
@@ -25,30 +29,26 @@
     };
   };
 
+  programs.direnv.enable = true;
+
   programs.eza = {
     enable = true;
     git = true;
+    icons = "auto";
   };
+
+  programs.fd.enable = true;
 
   programs.fish = {
     enable = true;
     plugins = [
-      { 
-        name = "fzf-fish"; 
+      {
+        name = "fzf-fish";
         src = pkgs.fishPlugins.fzf-fish.src;
       }
-      { 
-        name = "tide"; 
-        src = pkgs.fishPlugins.tide.src;
-      }
       {
-        name = "tmux";
-        src = pkgs.fetchFromGitHub {
-          owner = "budimanjojo";
-          repo = "tmux.fish";
-          rev = "e5874377b3d1359877053df7a9ea8aaeaf3bed2b";
-          sha256 = "sha256-+Z49BvoEdnvkuGibsHd5KjLQNUj+qJKHgq4Zey26s4k=";
-        };
+        name = "tide";
+        src = pkgs.fishPlugins.tide.src;
       }
     ];
     shellAliases = {
@@ -57,9 +57,10 @@
      reflake = "nix flake update";
      rehome = "nh home switch .";
      repair = "sudo nix-store --repair --verify --check-contents";
-     ks = "kitten ssh";
     };
   };
+
+  programs.fzf.enable = true;
 
   programs.gh = {
     enable = true;
@@ -93,7 +94,6 @@
 
   programs.ghostty = {
     enable = true;
-    enableFishIntegration = true;
     settings = {
       font-family = "Inconsolata LGC Nerd Font Mono";
       theme = "Zenburn";
@@ -103,6 +103,10 @@
       ];
       quick-terminal-size = "50%";
     };
+  };
+
+  programs.jujutsu = {
+    enable = true;
   };
 
   programs.navi = {
@@ -131,22 +135,20 @@
 
   programs.nix-index = {
     enable = true;
-    enableFishIntegration = true;
   };
 
-  programs.tmux = {
+  programs.ripgrep.enable = true;
+
+  programs.zellij = {
     enable = true;
-    mouse = true;
-    plugins = with pkgs; [
-      tmuxPlugins.better-mouse-mode
-      #tmuxPlugins.resurrect
-      #tmuxPlugins.continuum
-    ];
-    terminal = "tmux-256color";
+    enableFishIntegration = true; # https://github.com/nix-community/home-manager/pull/6695clade
+    attachExistingSession = true;
+    settings = {
+      theme = "ansi";
+    };
   };
 
   programs.zoxide = {
     enable = true;
-    enableFishIntegration = true;
   };
 }
