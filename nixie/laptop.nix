@@ -35,4 +35,9 @@
     #ppdSettings.main.default = "powersave";
   };
 
+  # Prevent Bluetooth from waking the system from sleep
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="0717", ATTR{power/wakeup}="disabled"
+  '';
+
 }

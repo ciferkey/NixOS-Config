@@ -217,6 +217,7 @@
   virtualisation = {
     docker = {
       enable = true;
+      #autoEnable = false; this mysteriously stopped working
       enableOnBoot = false;
     };
   };
@@ -225,8 +226,12 @@
 
   programs.gphoto2.enable = true;
 
-  hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  hardware.bluetooth = {
+    enable = true; # enables support for Bluetooth
+    powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  };
+
+
 
   # Enable mdns for .local domains
   services.avahi = {
