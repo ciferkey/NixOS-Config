@@ -165,8 +165,8 @@
     kdePackages.kio-gdrive
     kdePackages.plasma-integration
     kdePackages.plasma-nm
-    kdePackages.sddm-kcm
     tailscale-systray
+    spectacle.override { tesseractLanguages = [ "eng" ]; } # For OCR in spectacle
   ];
 
   services.tailscale.enable = true;
@@ -230,7 +230,9 @@
     powerOnBoot = true; # powers up the default Bluetooth controller on boot
   };
 
-
+  systemd.tmpfiles.rules = [
+    "e /home/ciferkey/Downloads - - - 60d"
+  ];
 
   # Enable mdns for .local domains
   services.avahi = {

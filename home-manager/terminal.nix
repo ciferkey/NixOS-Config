@@ -102,6 +102,11 @@
         "global:super+a=toggle_quick_terminal"
       ];
       quick-terminal-size = "50%";
+      # Fixes for ssh, https://ghostty.org/docs/config/reference#shell-integration-features
+      shell-integration-features = [
+        "ssh-terminfo"
+        "ssh-env"
+      ];
     };
   };
 
