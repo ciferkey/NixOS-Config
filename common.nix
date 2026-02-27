@@ -69,9 +69,8 @@
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  # Set the time zone automatically based on rough location, once, at startup.
-  time.timeZone = null;
-  services.tzupdate.enable = true;
+  # Automatically set the timezone
+  services.automatic-timezoned.enable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
