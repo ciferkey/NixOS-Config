@@ -55,7 +55,7 @@
     (btop.override {rocmSupport = true;})
     cachix
     caffeine-ng
-    calibre
+    #calibre
     claude-code-bin
     cura-appimage
     darktable
@@ -66,6 +66,12 @@
     feishin
     freetube
     fzf
+    (heroic.override {
+      extraPkgs = pkgs': with pkgs'; [
+        gamescope
+        gamemode
+      ];
+    })
     jellyfin-media-player 
     kdePackages.kasts
     #lutris
