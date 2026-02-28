@@ -19,6 +19,20 @@
     };
   };
 
+  programs.claude-code = {
+    enable = true;
+    package = pkgs.claude-code-bin;
+    settings = {
+      alwaysThinkingEnabled = true;
+      statusLine = {
+        type = "command";
+        command = "${pkgs.bun}/bin/bunx ccstatusline@latest";
+        padding = 0;
+      };
+    };
+  };
+  xdg.configFile."ccstatusline/settings.json".source = ./ccstatusline-settings.json;
+
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
