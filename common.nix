@@ -126,7 +126,6 @@
     extraGroups = [ 
       "adbusers"
       "camera" 
-      "dialout" # Allow access to serial device
       "docker"
       "lp"
       "networkmanager"
@@ -141,6 +140,7 @@
     ];
     shell = pkgs.fish;
   };
+
   security.pam.services = {
     ciferkey.enableKwallet = true;
     sddm.kwallet = {
@@ -166,7 +166,7 @@
     kdePackages.plasma-integration
     kdePackages.plasma-nm
     tailscale-systray
-    spectacle.override { tesseractLanguages = [ "eng" ]; } # For OCR in spectacle
+    #kdePackages.spectacle.override { tesseractLanguages = [ "eng" ]; } # For OCR in spectacle
   ];
 
   services.tailscale.enable = true;
@@ -196,9 +196,9 @@
   services = {
     udev = {
       packages = with pkgs; [
-        # Controller stuff https://codeberg.org/fabiscafe/game-devices-udev#nixos
-        game-devices-udev-rules
+        game-devices-udev-rules # Controller stuff https://codeberg.org/fabiscafe/game-devices-udev#nixos
         yubikey-personalization
+        probe-rs-tools # For esp32
       ];
     };
   };

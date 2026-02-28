@@ -21,6 +21,7 @@
     # ./users.nix
     ../common.nix
     ./desktop.nix
+    ./esp32.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
