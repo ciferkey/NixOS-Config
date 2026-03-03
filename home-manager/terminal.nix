@@ -110,6 +110,7 @@
       };
       extraConfig = {
         pull.rebase = true;
+        merge.tool = "nvimdiff";
       };
     };
   };
