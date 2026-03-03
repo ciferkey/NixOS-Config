@@ -70,7 +70,8 @@
         gamemode
       ];
     })
-    jellyfin-media-player 
+    jellyfin-media-player
+    jq
     kdePackages.kasts
     #lutris
     mangohud
