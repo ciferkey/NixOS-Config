@@ -23,6 +23,10 @@
     enable = true;
     package = pkgs.claude-code-bin;
     settings = {
+      env = {
+        # Workaround for https://github.com/anthropics/claude-code/issues/17289
+        DISABLE_INSTALLATION_CHECKS = "1";
+      };
       alwaysThinkingEnabled = true;
       statusLine = {
         type = "command";
