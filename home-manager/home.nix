@@ -52,7 +52,6 @@
     appimage-run
     bitwarden-desktop
     bottles
-    (btop.override {rocmSupport = true;})
     cachix
     caffeine-ng
     #calibre

@@ -33,6 +33,14 @@
   };
   xdg.configFile."ccstatusline/settings.json".source = ./ccstatusline-settings.json;
 
+  programs.btop = {
+    enable = true;
+    package = (pkgs.btop.override {rocmSupport = true;});
+    settings = {
+       theme = "tty";
+    };
+  };
+
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
