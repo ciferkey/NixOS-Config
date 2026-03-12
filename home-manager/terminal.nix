@@ -28,6 +28,7 @@
         DISABLE_INSTALLATION_CHECKS = "1";
       };
       alwaysThinkingEnabled = true;
+      model = "opus";
       statusLine = {
         type = "command";
         command = "${pkgs.bun}/bin/bunx ccstatusline@latest";
