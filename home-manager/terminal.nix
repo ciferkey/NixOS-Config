@@ -29,6 +29,9 @@
       };
       alwaysThinkingEnabled = true;
       model = "opus";
+      permissions = {
+        defaultMode = "plan";
+      };
       statusLine = {
         type = "command";
         command = "${pkgs.bun}/bin/bunx ccstatusline@latest";
