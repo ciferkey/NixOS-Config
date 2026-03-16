@@ -92,9 +92,8 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager = {
-    sddm = {
+    plasma-login-manager = {
       enable = true;
-      wayland.enable = true;
     };
     autoLogin.enable = false;
   };
@@ -143,7 +142,7 @@
 
   security.pam.services = {
     ciferkey.enableKwallet = true;
-    sddm.kwallet = {
+    plasma-login-manager.kwallet = {
       enable = true; # Fix to allow SDDM to start KWallet properly
       forceRun = true;
     };
