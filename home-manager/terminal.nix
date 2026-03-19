@@ -28,6 +28,18 @@
         DISABLE_INSTALLATION_CHECKS = "1";
       };
       alwaysThinkingEnabled = true;
+      enabledPlugins = {
+        "pyright-lsp@claude-plugins-official" = true;
+        "claude-notifications-go@claude-notifications-go" = true;
+      };
+      extraKnownMarketplaces = {
+        marketplace-name = {
+          source = {
+            source = "github";
+            repo = "777genius/claude-notifications-go";
+          };
+        };
+      };
       model = "opus";
       permissions = {
         defaultMode = "plan";

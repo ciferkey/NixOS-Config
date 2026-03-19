@@ -170,6 +170,8 @@
 
   services.tailscale.enable = true;
 
+  programs.nix-ld.enable = true;
+
   programs.partition-manager.enable = true;
 
   services.flatpak.enable = true;
