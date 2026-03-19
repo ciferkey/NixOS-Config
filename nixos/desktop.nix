@@ -14,5 +14,6 @@
   hardware.display.outputs."DP-2".edid = "XL2420G_2014.bin";
   hardware.display.outputs."DP-2".mode = "e";
 
-
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
 }
