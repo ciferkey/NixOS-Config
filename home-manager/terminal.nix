@@ -7,6 +7,10 @@
   ...
 }: {
 
+  age.secrets.kagi-api-key = {
+    file = ../secrets/kagi_api_key.age;
+  };
+
   # Enable integration here, rather than for every potential program.
   home.shell.enableFishIntegration = true;
 
@@ -22,6 +26,18 @@
   programs.claude-code = {
     enable = true;
     package = pkgs.claude-code-bin;
+    mcpServers = {
+      kagi = {
+        command = let
+          wrapper = pkgs.writeShellScript "kagi-mcp" ''
+            export KAGI_API_KEY="$(cat ${config.age.secrets.kagi-api-key.path})"
+            export KAGI_SUMMARIZER_ENGINE="agnes"
+            exec ${pkgs.uv}/bin/uvx kagimcp
+          '';
+        in "${wrapper}";
+        type = "stdio";
+      };
+    };
     settings = {
       env = {
         # Workaround for https://github.com/anthropics/claude-code/issues/17289
@@ -43,6 +59,7 @@
       model = "opus";
       permissions = {
         defaultMode = "plan";
+        deny = ["WebSearch"];
       };
       statusLine = {
         type = "command";
@@ -133,6 +150,7 @@
         merge.tool = "nvimdiff";
       };
     };
+    signing.format = null;
   };
 
   programs.ghostty = {

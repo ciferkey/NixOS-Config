@@ -50,6 +50,7 @@
 
   home.packages = with pkgs; [
     #anki
+    inputs.agenix.packages."${pkgs.system}".default
     appimage-run
     bitwarden-desktop
     bottles
