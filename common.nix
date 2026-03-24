@@ -243,4 +243,6 @@
   };
 
   services.printing.enable = true;
+
+  services.pcscd.enable = true; # smart card for yubikey
 }

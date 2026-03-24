@@ -11,6 +11,15 @@
     file = ../secrets/kagi_api_key.age;
   };
 
+  age.rekey = {
+    hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI2h3O8dPxq+F7s/XSb1SxJc6owZDE4WO9hI6HALfkX ciferkey@gmail.com";
+    masterIdentities = [ 
+      "/home/ciferkey/.ssh/yubikey-identity.txt"
+    ];
+    storageMode = "local";
+    localStorageDir = ./. + "/secrets/rekeyed/${config.networking.hostName}";
+  };
+
   # Enable integration here, rather than for every potential program.
   home.shell.enableFishIntegration = true;
 

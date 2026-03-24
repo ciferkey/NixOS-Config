@@ -28,8 +28,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     agenix = {
       url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    agenix-rekey = {
+      url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -45,7 +52,9 @@
     nixos-hardware,
     lanzaboote,
     claude-desktop,
+    flake-utils,
     agenix,
+    agenix-rekey,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -60,6 +69,14 @@
     # This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
+
+    # Configure agenix-rekey
+    agenix-rekey-configured = agenix-rekey.configure {
+      userFlake = self;
+      nixosConfigurations = self.nixosConfigurations;
+      darwinConfigurations = self.darwinConfigurations or { };
+      homeConfigurations = self.homeConfigurations;
+    };
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
@@ -107,6 +124,7 @@
         modules = [
           # > Our main home-manager configuration file <
           agenix.homeManagerModules.default
+          agenix-rekey.homeManagerModules.default
           ./home-manager/home.nix
         ];
       };
@@ -119,5 +137,18 @@
         ];
       };
     };
-  };
+  }
+  // flake-utils.lib.eachDefaultSystem (system: rec {
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [ agenix-rekey.overlays.default ];
+    };
+    devShells.default = pkgs.mkShell {
+      packages = [
+        agenix.packages.${system}.default
+        pkgs.age-plugin-yubikey
+        pkgs.agenix-rekey
+      ];
+    };
+  });
 }
