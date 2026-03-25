@@ -59,13 +59,10 @@
     #calibre
     cura-appimage
     darktable
-    docker-compose
     efibootmgr
     ente-auth
-    fd
     feishin
     freetube
-    fzf
     (heroic.override {
       extraPkgs = pkgs': with pkgs'; [
         gamescope
@@ -73,7 +70,6 @@
       ];
     })
     jellyfin-media-player
-    jq
     kdePackages.kasts
     #lutris
     mangohud
@@ -86,13 +82,8 @@
     obsidian
     picard
     protonup-qt
-    python3
-    ripgrep
-    ripgrep-all
     signal-desktop
     thunderbird
-    unzip
-    uv
     #xivlauncher
     vesktop
   ];
@@ -106,11 +97,6 @@
 
   programs.chromium = {
     enable = true;
-  };
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
   };
 
   programs.element-desktop = {

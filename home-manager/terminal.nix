@@ -97,7 +97,19 @@
     };
   };
 
-  programs.direnv.enable = true;
+  home.packages = with pkgs; [
+    docker-compose
+    jq
+    python3
+    ripgrep-all
+    unzip
+    uv
+  ];
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   programs.eza = {
     enable = true;
