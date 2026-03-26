@@ -49,16 +49,12 @@
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    #anki
     appimage-run
-    bitwarden-desktop
     bottles
     cachix
     caffeine-ng
     claude-desktop
     #calibre
-    cura-appimage
-    darktable
     efibootmgr
     ente-auth
     feishin
@@ -71,11 +67,9 @@
     })
     jellyfin-media-player
     kdePackages.kasts
-    #lutris
     mangohud
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
-    nh
     nix-du
     nixpkgs-review
     nix-update
