@@ -54,8 +54,6 @@
     cachix
     caffeine-ng
     claude-desktop
-    #calibre
-    efibootmgr
     ente-auth
     feishin
     freetube
@@ -70,15 +68,10 @@
     mangohud
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
-    nix-du
-    nixpkgs-review
-    nix-update
     obsidian
     picard
-    protonup-qt
     signal-desktop
     thunderbird
-    #xivlauncher
     vesktop
   ];
 
@@ -86,8 +79,6 @@
     username = "ciferkey";
     homeDirectory = "/home/ciferkey";
   };
-
-  #programs.autojump.enable = true;
 
   programs.chromium = {
     enable = true;
@@ -103,12 +94,30 @@
       settings = {
         "media.ffmpeg.vaapi.enabled" = "true";
         "extensions.formautofill.creditCards.enabled" = false;  # Disable credit card autofill, so I can use bitwarden instead.
+
+        "browser.startup.page" = 3;  # Restore previous session
+
+        "browser.newtabpage.enabled" = false;
+        "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+        "browser.newtabpage.activity-stream.feeds.topsites" = false;
+        "browser.newtabpage.activity-stream.showSearch" = false;
+
+        "browser.contentblocking.category" = "strict";
+        "dom.security.https_only_mode" = true;
+        "dom.security.https_only_mode_ever_enabled" = true;
+        "privacy.donottrackheader.enabled" = true;
+
+        "sidebar.verticalTabs" = true;
+
+        "browser.tabs.warnOnOpen" = false;
+        "browser.download.useDownloadDir" = false;
+        "general.autoScroll" = true;
+        "media.eme.enabled" = true;
+        "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
       };
     };
     nativeMessagingHosts = [ 
-      pkgs.firefoxpwa
       pkgs.kdePackages.plasma-browser-integration
-      pkgs.tridactyl-native
     ]; 
     package = pkgs.firefox.override {
       cfg = {
@@ -132,19 +141,7 @@
 
   programs.home-manager.enable = true;
 
-  programs.kitty = {
-    enable = true;
-    font.name = "Inconsolata LGC Nerd Font Mono";
-    themeFile = "Zenburn";
-    settings = {
-      adjust_line_height = 1; # Needed to fix nerd fonts
-      wayland_titlebar_color = "background";
-    };
-  };
-
   programs.vscode.enable = true;
-
-
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

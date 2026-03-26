@@ -226,6 +226,7 @@
       enable = true;
       dates = "weekly";
       extraArgs = "--keep-since 14d";
+    };
   };
 
   programs.nix-index = {
