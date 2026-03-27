@@ -127,6 +127,10 @@
           agenix-rekey.homeManagerModules.default
           ./home-manager/home.nix
           ./home-manager/personal.nix
+          {
+            age.rekey.hostPubkey = ./home-manager/secrets/nixos-pubkey.pub;
+            age.rekey.localStorageDir = ./home-manager/secrets/rekeyed/nixos;
+          }
         ];
       };
       "ciferkey@nixie" = home-manager.lib.homeManagerConfiguration {
@@ -138,6 +142,10 @@
           agenix-rekey.homeManagerModules.default
           ./home-manager/home.nix
           ./home-manager/personal.nix
+          {
+            age.rekey.hostPubkey = ./home-manager/secrets/nixie-pubkey.pub;
+            age.rekey.localStorageDir = ./home-manager/secrets/rekeyed/nixie;
+          }
         ];
       };
     };

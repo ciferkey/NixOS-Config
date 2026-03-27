@@ -50,6 +50,7 @@
     cachix
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
+    sox # for voice in claude code
     thunderbird
   ];
 
