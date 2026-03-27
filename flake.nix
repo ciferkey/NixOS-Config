@@ -126,6 +126,7 @@
           agenix.homeManagerModules.default
           agenix-rekey.homeManagerModules.default
           ./home-manager/home.nix
+          ./home-manager/personal.nix
         ];
       };
       "ciferkey@nixie" = home-manager.lib.homeManagerConfiguration {
@@ -134,6 +135,7 @@
         modules = [
           # > Our main home-manager configuration file <
           ./home-manager/home.nix
+          ./home-manager/personal.nix
         ];
       };
     };
