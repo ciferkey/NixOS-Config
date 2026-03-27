@@ -70,14 +70,14 @@
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
 
+  in {
     # Configure agenix-rekey
-    agenix-rekey-configured = agenix-rekey.configure {
+    agenix-rekey = inputs.agenix-rekey.configure {
       userFlake = self;
-      nixosConfigurations = self.nixosConfigurations;
-      darwinConfigurations = self.darwinConfigurations or { };
+      nixosConfigurations = {};
+      darwinConfigurations = { };
       homeConfigurations = self.homeConfigurations;
     };
-  in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
     packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -134,6 +134,8 @@
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
           # > Our main home-manager configuration file <
+          agenix.homeManagerModules.default
+          agenix-rekey.homeManagerModules.default
           ./home-manager/home.nix
           ./home-manager/personal.nix
         ];
@@ -147,7 +149,7 @@
     };
     devShells.default = pkgs.mkShell {
       packages = [
-        agenix.packages.${system}.default
+        pkgs.age
         pkgs.age-plugin-yubikey
         pkgs.agenix-rekey
       ];

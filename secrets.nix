@@ -1,6 +1,0 @@
-let
-  user = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI2h3O8dPxq+F7s/XSb1SxJc6owZDE4WO9hI6HALfkX ciferkey@gmail.com";
-in
-{
-  "secrets/kagi_api_key.age".publicKeys = [ user ];
-}

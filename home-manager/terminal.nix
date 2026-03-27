@@ -8,7 +8,7 @@
 }: {
 
   age.secrets.kagi-api-key = {
-    file = ../secrets/kagi_api_key.age;
+    rekeyFile = ./secrets/kagi_api_key.age;
   };
 
   age.rekey = {
@@ -17,7 +17,7 @@
       "/home/ciferkey/.ssh/yubikey-identity.txt"
     ];
     storageMode = "local";
-    localStorageDir = ./. + "/secrets/rekeyed/${config.networking.hostName}";
+    localStorageDir = ./secrets/rekeyed;
   };
 
   # Enable integration here, rather than for every potential program.
