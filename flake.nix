@@ -69,98 +69,98 @@
     # This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
+  in
+    {
+      # Configure agenix-rekey
+      agenix-rekey = inputs.agenix-rekey.configure {
+        userFlake = self;
+        nixosConfigurations = {};
+        darwinConfigurations = {};
+        homeConfigurations = self.homeConfigurations;
+      };
+      # Your custom packages
+      # Accessible through 'nix build', 'nix shell', etc
+      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      # Formatter for your nix files, available through 'nix fmt'
+      # Other options beside 'alejandra' include 'nixpkgs-fmt'
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
-  in {
-    # Configure agenix-rekey
-    agenix-rekey = inputs.agenix-rekey.configure {
-      userFlake = self;
-      nixosConfigurations = {};
-      darwinConfigurations = { };
-      homeConfigurations = self.homeConfigurations;
-    };
-    # Your custom packages
-    # Accessible through 'nix build', 'nix shell', etc
-    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      # Your custom packages and modifications, exported as overlays
+      overlays = import ./overlays {inherit inputs;};
+      # Reusable nixos modules you might want to export
+      # These are usually stuff you would upstream into nixpkgs
+      nixosModules = import ./modules/nixos;
+      # Reusable home-manager modules you might want to export
+      # These are usually stuff you would upstream into home-manager
+      homeManagerModules = import ./modules/home-manager;
 
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
-    # Reusable nixos modules you might want to export
-    # These are usually stuff you would upstream into nixpkgs
-    nixosModules = import ./modules/nixos;
-    # Reusable home-manager modules you might want to export
-    # These are usually stuff you would upstream into home-manager
-    homeManagerModules = import ./modules/home-manager;
+      # NixOS configuration entrypoint
+      # Available through 'nixos-rebuild --flake .#your-hostname'
+      nixosConfigurations = {
+        nixos = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            # > Our main nixos configuration file <
+            ./nixos/configuration.nix
+          ];
+        };
+        nixie = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs outputs;};
+          modules = [
+            # > Our main nixos configuration file <
+            nixos-hardware.nixosModules.framework-amd-ai-300-series
+            lanzaboote.nixosModules.lanzaboote
+            ./nixie/configuration.nix
+          ];
+        };
+      };
 
-    # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main nixos configuration file <
-          ./nixos/configuration.nix
+      # Standalone home-manager configuration entrypoint
+      # Available through 'home-manager --flake .#your-username@your-hostname'
+      homeConfigurations = {
+        "ciferkey@nixos" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = {inherit inputs outputs;};
+          modules = [
+            # > Our main home-manager configuration file <
+            agenix.homeManagerModules.default
+            agenix-rekey.homeManagerModules.default
+            ./home-manager/home.nix
+            ./home-manager/personal.nix
+            {
+              age.rekey.hostPubkey = ./home-manager/secrets/nixos-pubkey.pub;
+              age.rekey.localStorageDir = ./home-manager/secrets/rekeyed/nixos;
+            }
+          ];
+        };
+        "ciferkey@nixie" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = {inherit inputs outputs;};
+          modules = [
+            # > Our main home-manager configuration file <
+            agenix.homeManagerModules.default
+            agenix-rekey.homeManagerModules.default
+            ./home-manager/home.nix
+            ./home-manager/personal.nix
+            {
+              age.rekey.hostPubkey = ./home-manager/secrets/nixie-pubkey.pub;
+              age.rekey.localStorageDir = ./home-manager/secrets/rekeyed/nixie;
+            }
+          ];
+        };
+      };
+    }
+    // flake-utils.lib.eachDefaultSystem (system: rec {
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [agenix-rekey.overlays.default];
+      };
+      devShells.default = pkgs.mkShell {
+        packages = [
+          pkgs.age
+          pkgs.age-plugin-yubikey
+          pkgs.agenix-rekey
         ];
       };
-      nixie = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main nixos configuration file <
-          nixos-hardware.nixosModules.framework-amd-ai-300-series
-          lanzaboote.nixosModules.lanzaboote
-          ./nixie/configuration.nix
-        ];
-      };
-    };
-
-    # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#your-username@your-hostname'
-    homeConfigurations = {
-      "ciferkey@nixos" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main home-manager configuration file <
-          agenix.homeManagerModules.default
-          agenix-rekey.homeManagerModules.default
-          ./home-manager/home.nix
-          ./home-manager/personal.nix
-          {
-            age.rekey.hostPubkey = ./home-manager/secrets/nixos-pubkey.pub;
-            age.rekey.localStorageDir = ./home-manager/secrets/rekeyed/nixos;
-          }
-        ];
-      };
-      "ciferkey@nixie" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main home-manager configuration file <
-          agenix.homeManagerModules.default
-          agenix-rekey.homeManagerModules.default
-          ./home-manager/home.nix
-          ./home-manager/personal.nix
-          {
-            age.rekey.hostPubkey = ./home-manager/secrets/nixie-pubkey.pub;
-            age.rekey.localStorageDir = ./home-manager/secrets/rekeyed/nixie;
-          }
-        ];
-      };
-    };
-  }
-  // flake-utils.lib.eachDefaultSystem (system: rec {
-    pkgs = import nixpkgs {
-      inherit system;
-      overlays = [ agenix-rekey.overlays.default ];
-    };
-    devShells.default = pkgs.mkShell {
-      packages = [
-        pkgs.age
-        pkgs.age-plugin-yubikey
-        pkgs.agenix-rekey
-      ];
-    };
-  });
+    });
 }

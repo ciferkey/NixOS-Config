@@ -6,7 +6,6 @@
   pkgs,
   ...
 }: {
-
   age.secrets.kagi-api-key = {
     rekeyFile = ./secrets/kagi_api_key.age;
   };
@@ -16,7 +15,6 @@
       "/home/ciferkey/.ssh/yubikey-identity.txt"
     ];
     storageMode = "local";
-
   };
 
   # Enable integration here, rather than for every potential program.
@@ -80,9 +78,9 @@
 
   programs.btop = {
     enable = true;
-    package = (pkgs.btop.override {rocmSupport = true;});
+    package = pkgs.btop.override {rocmSupport = true;};
     settings = {
-       theme = "tty";
+      theme = "tty";
     };
   };
 
@@ -131,11 +129,11 @@
       }
     ];
     shellAliases = {
-     g = "git";
-     rebuild = "nh os switch .";
-     reflake = "nix flake update";
-     rehome = "nh home switch .";
-     repair = "sudo nix-store --repair --verify --check-contents";
+      g = "git";
+      rebuild = "nh os switch .";
+      reflake = "nix flake update";
+      rehome = "nh home switch .";
+      repair = "sudo nix-store --repair --verify --check-contents";
     };
   };
 
@@ -162,7 +160,7 @@
         s = "status";
       };
       user = {
-        name  = "ciferkey";
+        name = "ciferkey";
         email = "ciferkey@gmail.com";
       };
       pull.rebase = true;

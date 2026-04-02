@@ -6,15 +6,15 @@
   pkgs,
   ...
 }: {
-
   networking.hostName = "nixie";
 
   # Swapfile for hibernation on BTRFS in LUKS
-  swapDevices = [{
-    device = "/.swapvol/swapfile";
-    size = 32 * 1024;
-  }];
-
+  swapDevices = [
+    {
+      device = "/.swapvol/swapfile";
+      size = 32 * 1024;
+    }
+  ];
 
   # Secure boot
   # https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md#configuring-nixos-with-flakes
@@ -38,9 +38,8 @@
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="0e8d", ATTRS{idProduct}=="0717", ATTR{power/wakeup}="disabled"
   '';
-  
+
   # For ambient light sensor support in KDE 6.6
   # See https://bugs.kde.org/show_bug.cgi?id=502122#c4
   hardware.sensor.iio.enable = true;
-
 }

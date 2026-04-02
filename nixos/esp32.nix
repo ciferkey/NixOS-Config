@@ -6,7 +6,6 @@
   pkgs,
   ...
 }: {
-
   users.groups.plugdev = {}; # need to make explicitly
 
   users.users.ciferkey = {
@@ -25,5 +24,4 @@
       ];
     };
   };
-
 }

@@ -8,7 +8,6 @@
   pkgs,
   ...
 }: {
-  
   nixpkgs = {
     # You can add overlays here
     overlays = [
@@ -39,7 +38,7 @@
     # This will additionally add your inputs to the system's legacy channels
     # Making legacy nix commands consistent as well
     registry.nixpkgs.flake = inputs.nixpkgs;
-    nixPath = [ "nixpkgs=flake:nixpkgs" ];
+    nixPath = ["nixpkgs=flake:nixpkgs"];
 
     # Enable flakes and automatically clean up the nix store
     settings = {
@@ -58,7 +57,7 @@
 
   # Zswap
   boot.initrd.systemd.enable = true;
-  boot.kernelParams = [ "zswap.enabled=1" "zswap.compressor=lz4" ];
+  boot.kernelParams = ["zswap.enabled=1" "zswap.compressor=lz4"];
   boot.kernel.sysctl."vm.swappiness" = 100;
 
   # Firmware
@@ -116,20 +115,20 @@
     pulse.enable = true;
     jack.enable = true;
   };
- 
+
   # User Settings
   programs.fish.enable = true;
   users.users.ciferkey = {
     isNormalUser = true;
     description = "ciferkey";
-    extraGroups = [ 
+    extraGroups = [
       "adbusers"
-      "camera" 
+      "camera"
       "docker"
       "lp"
       "networkmanager"
       "scanner"
-      "wheel" 
+      "wheel"
     ];
     packages = with pkgs; [
       android-tools
@@ -146,7 +145,7 @@
       enable = true; # Fix to allow SDDM to start KWallet properly
       forceRun = true;
     };
-    kde.kwallet =  {
+    kde.kwallet = {
       enable = true; # Allow lockscreen password to also start KWallet
       forceRun = true;
     };

@@ -6,7 +6,6 @@
   pkgs,
   ...
 }: {
-
   networking.hostName = "nixos";
 
   # Fix EDID for monitor on AMD

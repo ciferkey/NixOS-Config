@@ -31,10 +31,11 @@
     feishin
     freetube
     (heroic.override {
-      extraPkgs = pkgs': with pkgs'; [
-        gamescope
-        gamemode
-      ];
+      extraPkgs = pkgs':
+        with pkgs'; [
+          gamescope
+          gamemode
+        ];
     })
     jellyfin-media-player
     libreoffice-qt-fresh
@@ -63,9 +64,9 @@
     profiles.default = {
       settings = {
         "media.ffmpeg.vaapi.enabled" = "true";
-        "extensions.formautofill.creditCards.enabled" = false;  # Disable credit card autofill, so I can use bitwarden instead.
+        "extensions.formautofill.creditCards.enabled" = false; # Disable credit card autofill, so I can use bitwarden instead.
 
-        "browser.startup.page" = 3;  # Restore previous session
+        "browser.startup.page" = 3; # Restore previous session
 
         "browser.newtabpage.enabled" = false;
         "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
@@ -86,9 +87,9 @@
         "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
       };
     };
-    nativeMessagingHosts = [ 
+    nativeMessagingHosts = [
       pkgs.kdePackages.plasma-browser-integration
-    ]; 
+    ];
     package = pkgs.firefox.override {
       cfg = {
         speechSynthesisSupport = true;
@@ -115,5 +116,4 @@
   systemd.user.startServices = "sd-switch";
 
   services.udiskie.enable = true; # Auto mount usb drives
-
 }
