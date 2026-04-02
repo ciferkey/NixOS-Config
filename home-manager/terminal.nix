@@ -165,10 +165,8 @@
         name  = "ciferkey";
         email = "ciferkey@gmail.com";
       };
-      extraConfig = {
-        pull.rebase = true;
-        merge.tool = "nvimdiff";
-      };
+      pull.rebase = true;
+      merge.tool = "nvimdiff";
     };
     signing.format = null;
   };

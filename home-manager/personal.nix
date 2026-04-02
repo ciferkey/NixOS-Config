@@ -37,7 +37,7 @@
       ];
     })
     jellyfin-media-player
-    kdePackages.kasts
+    libreoffice-qt-fresh
     mangohud
     obsidian
     picard
