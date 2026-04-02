@@ -9,8 +9,7 @@
 
   networking.hostName = "nixie";
 
-  # For hibernate to work with swapfile on BRTFS in LUKS
-  boot.initrd.systemd.enable = true;
+  # Swapfile for hibernation on BTRFS in LUKS
   swapDevices = [{
     device = "/.swapvol/swapfile";
     size = 32 * 1024;

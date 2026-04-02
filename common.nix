@@ -56,6 +56,11 @@
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Zswap
+  boot.initrd.systemd.enable = true;
+  boot.kernelParams = [ "zswap.enabled=1" "zswap.compressor=lz4" ];
+  boot.kernel.sysctl."vm.swappiness" = 100;
+
   # Firmware
   services.fwupd.enable = true;
   hardware.enableAllFirmware = true;
@@ -200,9 +205,6 @@
   };
   hardware.uinput.enable = true;
 
-  zramSwap.enable = true;
-
-  
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
