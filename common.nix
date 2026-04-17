@@ -57,7 +57,10 @@
 
   # Zswap
   boot.initrd.systemd.enable = true;
-  boot.kernelParams = ["zswap.enabled=1" "zswap.compressor=lz4"];
+  boot.zswap = {
+    enable = true;
+    compressor = "lz4";
+  };
   boot.kernel.sysctl."vm.swappiness" = 100;
 
   # Firmware
