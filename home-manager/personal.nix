@@ -42,6 +42,7 @@
     mangohud
     obsidian
     picard
+    pocket-casts
     signal-desktop
     vesktop
   ];
