@@ -111,6 +111,11 @@
     };
   };
 
+  programs.opencode = {
+    enable = true;
+    tui.theme = "zenburn";
+  };
+
   programs.vscode.enable = true;
 
   # Nicely reload system units when changing configs
