@@ -26,7 +26,6 @@
     appimage-run
     bottles
     caffeine-ng
-    claude-desktop
     ente-auth
     feishin
     freetube

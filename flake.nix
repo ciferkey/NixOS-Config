@@ -23,11 +23,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-desktop = {
-      url = "github:aaddrick/claude-desktop-debian";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     flake-utils.url = "github:numtide/flake-utils";
 
     agenix = {
@@ -51,7 +46,6 @@
     home-manager,
     nixos-hardware,
     lanzaboote,
-    claude-desktop,
     flake-utils,
     agenix,
     agenix-rekey,
