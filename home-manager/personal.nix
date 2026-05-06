@@ -42,6 +42,7 @@
     obsidian
     picard
     pocket-casts
+    jetbrains.pycharm
     signal-desktop
     vesktop
   ];
@@ -112,10 +113,28 @@
 
   programs.opencode = {
     enable = true;
+    extraPackages = [
+      pkgs.nixd # lsp for nix
+      pkgs.basedpyright
+    ];
+    settings = {
+      lsp = true; # https://github.com/anomalyco/opencode/issues/23566
+      plugin = [
+        "@tickernelz/opencode-mem@latest"
+        "@plannotator/opencode@latest"
+      ];
+    };
     tui.theme = "zenburn";
   };
 
   programs.vscode.enable = true;
+
+  programs.zed-editor = {
+    enable = true;
+    extensions = [ "OpenCode" "zedburn" ];
+  };
+
+  # TODO: shared programs.mcp.servers section
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
