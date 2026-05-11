@@ -128,6 +128,11 @@
     tui.theme = "zenburn";
   };
 
+  programs.vicinae = {
+    enable = true;
+    systemd.enable = true;
+  };
+
   programs.vscode.enable = true;
 
   programs.zed-editor = {
