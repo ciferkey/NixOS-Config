@@ -37,7 +37,7 @@
         ];
     })
     jellyfin-media-player
-    libreoffice-qt-fresh
+    #libreoffice-qt-fresh
     mangohud
     obsidian
     picard
@@ -114,8 +114,9 @@
   programs.opencode = {
     enable = true;
     extraPackages = [
-      pkgs.nixd # lsp for nix
       pkgs.basedpyright
+      pkgs.jdt-language-server
+      pkgs.nixd
     ];
     settings = {
       lsp = true; # https://github.com/anomalyco/opencode/issues/23566
