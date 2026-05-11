@@ -10,11 +10,5 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
-
-    # Workaround for https://github.com/NixOS/nixpkgs/issues/514113
-    # Remove once https://github.com/NixOS/nixpkgs/pull/515956 lands
-    openldap = prev.openldap.overrideAttrs (old: {
-      preCheck = (old.preCheck or "") + "\nrm -f tests/scripts/test*-sync*";
-    });
   };
 }

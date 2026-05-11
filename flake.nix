@@ -40,6 +40,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
+
+    nixpkgs-patch-openldap-sync-tests = {
+      url = "https://github.com/NixOS/nixpkgs/pull/515956.diff";
+      flake = false;
+    };
+
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
     # nix-colors.url = "github:misterio77/nix-colors";
@@ -68,6 +75,10 @@
     # This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
+    patchedPkgs-x86_64 = import (inputs.nixpkgs-patcher.lib.patchNixpkgs {
+      inherit inputs;
+      system = "x86_64-linux";
+    }) {system = "x86_64-linux";};
   in
     {
       # Configure agenix-rekey
@@ -96,15 +107,17 @@
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
+        nixos = inputs.nixpkgs-patcher.lib.nixosSystem {
           specialArgs = {inherit inputs outputs;};
+          nixpkgsPatcher.inputs = inputs;
           modules = [
             # > Our main nixos configuration file <
             ./nixos/configuration.nix
           ];
         };
-        nixie = nixpkgs.lib.nixosSystem {
+        nixie = inputs.nixpkgs-patcher.lib.nixosSystem {
           specialArgs = {inherit inputs outputs;};
+          nixpkgsPatcher.inputs = inputs;
           modules = [
             # > Our main nixos configuration file <
             nixos-hardware.nixosModules.framework-amd-ai-300-series
@@ -118,7 +131,7 @@
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
         "ciferkey@nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          pkgs = patchedPkgs-x86_64; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = {inherit inputs outputs;};
           modules = [
             # > Our main home-manager configuration file <
@@ -133,7 +146,7 @@
           ];
         };
         "ciferkey@nixie" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          pkgs = patchedPkgs-x86_64; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = {inherit inputs outputs;};
           modules = [
             # > Our main home-manager configuration file <
