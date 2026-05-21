@@ -43,6 +43,7 @@
     picard
     pocket-casts
     jetbrains.pycharm
+    jetbrains.rust-rover
     signal-desktop
     vesktop
   ];
@@ -122,7 +123,7 @@
       lsp = true; # https://github.com/anomalyco/opencode/issues/23566
       plugin = [
         "@tickernelz/opencode-mem@latest"
-        "@plannotator/opencode@latest"
+        #"@plannotator/opencode@latest"
       ];
     };
     tui.theme = "zenburn";
