@@ -130,6 +130,7 @@
     ];
     shellAliases = {
       g = "git";
+      rbaz = "sudo efibootmgr -n 0 && sudo reboot now";
       rebuild = "nh os switch .";
       reflake = "nix flake update";
       rehome = "nh home switch .";
