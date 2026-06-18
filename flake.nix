@@ -42,11 +42,6 @@
 
     nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
 
-    nixpkgs-patch-openldap-sync-tests = {
-      url = "https://github.com/NixOS/nixpkgs/pull/515956.diff";
-      flake = false;
-    };
-
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
     # nix-colors.url = "github:misterio77/nix-colors";

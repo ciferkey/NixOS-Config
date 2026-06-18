@@ -24,18 +24,10 @@
 
   home.packages = with pkgs; [
     appimage-run
-    bottles
     caffeine-ng
     ente-auth
     feishin
     freetube
-    (heroic.override {
-      extraPkgs = pkgs':
-        with pkgs'; [
-          gamescope
-          gamemode
-        ];
-    })
     jellyfin-media-player
     #libreoffice-qt-fresh
     mangohud
@@ -45,7 +37,11 @@
     jetbrains.pycharm
     jetbrains.rust-rover
     signal-desktop
+    sone
     vesktop
+
+    android-studio
+    jdk17
   ];
 
   home = {
@@ -147,4 +143,6 @@
   systemd.user.startServices = "sd-switch";
 
   services.udiskie.enable = true; # Auto mount usb drives
+
+
 }
