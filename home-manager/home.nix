@@ -30,6 +30,7 @@
 
       # You can also add overlays exported from other flakes:
       inputs.opencode-nix.overlays.default
+      inputs.nix-claude-code.overlays.default
 
       # Or define it inline, for example:
       # (final: prev: {

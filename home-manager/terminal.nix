@@ -31,7 +31,7 @@
 
   programs.claude-code = {
     enable = true;
-    package = pkgs.claude-code-bin;
+    #package = pkgs.claude-code-fhs;
     mcpServers = {
       kagi = {
         command = let
@@ -214,6 +214,9 @@
       pkgs.vimPlugins.zenburn
     ];
     vimAlias = true;
+    # Pin pre-26.05 defaults; remove on a fresh stateVersion >= 26.05 install.
+    withRuby = false;
+    withPython3 = false;
   };
 
   programs.nh = {

@@ -93,6 +93,8 @@
         speechSynthesisSupport = true;
       };
     };
+    # Pin pre-26.05 default path; remove on a fresh stateVersion >= 26.05 install.
+    configPath = ".mozilla/firefox";
   };
 
   programs.hexchat = {
