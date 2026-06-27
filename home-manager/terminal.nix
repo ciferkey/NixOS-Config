@@ -34,21 +34,22 @@
     #package = pkgs.claude-code-fhs;
     mcpServers = {
       kagi = {
-        command = let
-          wrapper = pkgs.writeShellScript "kagi-mcp" ''
-            export KAGI_API_KEY="$(cat ${config.age.secrets.kagi-api-key.path})"
-            export KAGI_SUMMARIZER_ENGINE="agnes"
-            exec ${pkgs.uv}/bin/uvx kagimcp
+        type = "http";
+        url = "https://mcp.kagi.com/mcp";
+        headersHelper = let
+          authHeader = pkgs.writeShellScript "kagi-mcp-auth" ''
+            ${pkgs.jq}/bin/jq -nc \
+              --arg key "$(cat ${config.age.secrets.kagi-api-key.path})" \
+              '{"Authorization": "Bearer \($key)"}'
           '';
-        in "${wrapper}";
-        type = "stdio";
+        in "${authHeader}";
       };
     };
     settings = {
       env = {
         CLAUDE_CODE_AUTO_COMPACT_WINDOW = "1000000"; # https://github.com/anthropics/claude-code/issues/43989
         CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS = "1";
-        CLAUDE_CODE_NO_FLICKER=1
+        CLAUDE_CODE_NO_FLICKER=1;
         DISABLE_INSTALLATION_CHECKS = "1"; # https://github.com/anthropics/claude-code/issues/17289
       };
       alwaysThinkingEnabled = true;
