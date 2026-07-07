@@ -149,7 +149,11 @@
     };
   };
 
-  programs.fzf.enable = true;
+  programs.fzf = {
+    enable = true;
+    # Atuin owns Ctrl-R in fish; disable fzf's history widget to avoid the conflict.
+    historyWidget.fish.command = "";
+  };
 
   programs.gh = {
     enable = true;
