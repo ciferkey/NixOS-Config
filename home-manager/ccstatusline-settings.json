@@ -15,10 +15,15 @@
         "id": "5",
         "type": "git-branch",
         "color": "magenta"
+      },
+      {
+        "id": "6",
+        "type": "session-usage",
+        "color": "green"
       }
     ]
   ],
-  "flexMode": "full-minus-40",
+  "flexMode": "full-until-compact",
   "compactThreshold": 60,
   "colorLevel": 1,
   "inheritSeparatorColors": false,
