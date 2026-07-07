@@ -24,7 +24,6 @@
 
   home.packages = with pkgs; [
     appimage-run
-    caffeine-ng
     ente-auth
     feishin
     freetube
