@@ -37,7 +37,17 @@
     jetbrains.rust-rover
     signal-desktop
     sone
-    vesktop
+    # --disable-gpu: vesktop's Electron GPU process holds an amdgpu DMA fence that never
+    # signals during the hibernate freeze -> amdgpu_vm_fini/dma_fence_wait_timeout hangs and
+    # hibernate aborts with "Device or resource busy". Forcing GPU off lets hibernate work
+    # with vesktop running. Vesktop HW-accel is buggy on AMD/Wayland:
+    # https://github.com/Vencord/Vesktop/issues/1009
+    (pkgs.symlinkJoin {
+      name = "vesktop";
+      paths = [ pkgs.vesktop ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = "wrapProgram $out/bin/vesktop --add-flags \"--disable-gpu\"";
+    })
 
     android-studio
     jdk17
