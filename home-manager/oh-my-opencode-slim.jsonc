@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json",
+  "preset": "opencode-go",
+  // enables Observer (GLM orchestrator isn't multimodal)
+  "disabled_agents": [],
+  "image_routing": "auto",
+  "companion": { "enabled": true, "position": "bottom-right", "size": "medium" },
+  "presets": {
+    "opencode-go": {
+      "orchestrator": { "model": "opencode-go/minimax-m3", "variant": "max", "skills": ["*"], "mcps": ["*", "!context7"] },
+      "oracle": { "model": "opencode-go/qwen3.7-max", "variant": "max", "skills": ["simplify"], "mcps": [] },
+      "librarian": { "model": "opencode-go/deepseek-v4-flash", "variant": "high", "skills": [], "mcps": ["websearch", "context7", "gh_grep"] },
+      "explorer": { "model": "opencode-go/deepseek-v4-flash", "variant": "max", "skills": [], "mcps": [] },
+      "designer": { "model": "opencode-go/kimi-k2.7-code", "variant": "medium", "skills": [], "mcps": [] },
+      "fixer": { "model": "opencode-go/deepseek-v4-flash", "variant": "high", "skills": [], "mcps": [] },
+      "observer": { "model": "opencode-go/mimo-v2.5", "variant": "max", "skills": [], "mcps": [] }
+    }
+  }
+}

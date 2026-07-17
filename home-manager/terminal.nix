@@ -32,6 +32,7 @@
   programs.claude-code = {
     enable = true;
     #package = pkgs.claude-code-fhs;
+    enableMcpIntegration = true;
     mcpServers = {
       kagi = {
         type = "http";
@@ -43,10 +44,6 @@
               '{"Authorization": "Bearer \($key)"}'
           '';
         in "${authHeader}";
-      };
-      nixos = {
-        type = "stdio";
-        command = lib.getExe pkgs.mcp-nixos;
       };
     };
     settings = {
@@ -90,6 +87,14 @@
     };
   };
   xdg.configFile."ccstatusline/settings.json".source = ./ccstatusline-settings.json;
+
+  programs.mcp = {
+    enable = true;
+    servers.nixos = {
+      command = lib.getExe pkgs.mcp-nixos;
+      enabled = true; # keep explicit so both clients list it as enabled
+    };
+  };
 
   programs.btop = {
     enable = true;

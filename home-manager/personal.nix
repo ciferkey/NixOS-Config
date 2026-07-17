@@ -47,8 +47,8 @@
     # https://github.com/Vencord/Vesktop/issues/1009
     (pkgs.symlinkJoin {
       name = "vesktop";
-      paths = [ pkgs.vesktop ];
-      nativeBuildInputs = [ pkgs.makeWrapper ];
+      paths = [pkgs.vesktop];
+      nativeBuildInputs = [pkgs.makeWrapper];
       postBuild = "wrapProgram $out/bin/vesktop --add-flags \"--disable-gpu\"";
     })
 
@@ -124,20 +124,53 @@
 
   programs.opencode = {
     enable = true;
+    enableMcpIntegration = true;
     extraPackages = [
       pkgs.basedpyright
       pkgs.jdt-language-server
       pkgs.nixd
+      pkgs.nixfmt
+      pkgs.ruff
+      pkgs.rustfmt
     ];
     settings = {
       lsp = true; # https://github.com/anomalyco/opencode/issues/23566
+      formatter = true;
       plugin = [
         "@tickernelz/opencode-mem@latest"
-        #"@plannotator/opencode@latest"
+        "oh-my-opencode-slim@latest"
       ];
+      agent = {
+        explore.disable = true;
+        general.disable = true;
+      };
+      mcp.kagi = {
+        type = "remote";
+        url = "https://mcp.kagi.com/mcp";
+        enabled = true;
+        # opencode's {file:} resolver can't shell-expand ${XDG_RUNTIME_DIR}; rewrite it to
+        # opencode's own {env:} token (opencode runs the env pass before the file pass, and
+        # trims file contents, dropping the secret's trailing newline).
+        headers.Authorization = "Bearer {file:${
+          lib.replaceStrings ["\${XDG_RUNTIME_DIR}"] ["{env:XDG_RUNTIME_DIR}"]
+          config.age.secrets.kagi-api-key.path
+        }}";
+      };
     };
-    tui.theme = "zenburn";
+    tui = {
+      theme = "zenburn";
+      plugin = ["oh-my-opencode-slim"];
+    };
   };
+
+  # opencode reads OPENCODE_EXPERIMENTAL_* from the process environment, not its
+  # config file (opencode.json has no `env` field, unlike claude-code's settings),
+  # and the upstream `programs.opencode` home-manager module exposes no env option
+  # nor wraps the binary with --set. So this must come from the shell environment;
+  # set globally until a scoped mechanism (shell wrapper / upstream env option) exists.
+  home.sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
+
+  xdg.configFile."opencode/oh-my-opencode-slim.jsonc".source = ./oh-my-opencode-slim.jsonc;
 
   programs.vicinae = {
     enable = true;
@@ -148,10 +181,11 @@
 
   programs.zed-editor = {
     enable = true;
-    extensions = ["OpenCode" "zedburn"];
+    extensions = [
+      "OpenCode"
+      "zedburn"
+    ];
   };
-
-  # TODO: shared programs.mcp.servers section
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
