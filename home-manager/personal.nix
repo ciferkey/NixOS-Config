@@ -30,7 +30,10 @@
     jellyfin-media-player
     #libreoffice-qt-fresh
     mangohud
-    obsidian
+    # Workaround for Electron 41 WASM-streaming renderer crash (electron/electron#52178).
+    # electron_41 (bundled default) crashes on startup; electron_42 (>=42.4.1) has the fix.
+    # Remove once nixpkgs' obsidian picks up a patched electron_41.
+    (obsidian.override {electron = electron_42;})
     picard
     pocket-casts
     jetbrains.pycharm
@@ -145,7 +148,7 @@
 
   programs.zed-editor = {
     enable = true;
-    extensions = [ "OpenCode" "zedburn" ];
+    extensions = ["OpenCode" "zedburn"];
   };
 
   # TODO: shared programs.mcp.servers section
@@ -154,6 +157,4 @@
   systemd.user.startServices = "sd-switch";
 
   services.udiskie.enable = true; # Auto mount usb drives
-
-
 }
