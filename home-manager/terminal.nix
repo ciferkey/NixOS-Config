@@ -44,6 +44,10 @@
           '';
         in "${authHeader}";
       };
+      nixos = {
+        type = "stdio";
+        command = lib.getExe pkgs.mcp-nixos;
+      };
     };
     settings = {
       env = {
