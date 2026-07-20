@@ -37,4 +37,12 @@
   # For ambient light sensor support in KDE 6.6
   # See https://bugs.kde.org/show_bug.cgi?id=502122#c4
   hardware.sensor.iio.enable = true;
+
+  # amdgpu.cwsr_enable=0: GFX11.5 (Radeon 890M) has broken CWSR (Compute Wave Save/Restore) that
+  # wedges the MES scheduler so GPU fences never signal. During the hibernate freeze that surfaces
+  # as amdgpu_vm_fini/dma_fence_wait_timeout: any GPU-accelerated app "refuses to freeze" and
+  # hibernate aborts "Device or resource busy". Disabling CWSR is the documented workaround
+  # (ROCm #5590/#5724, Framework AMD AI 300 threads). Proper fix targets kernel ~7.3
+  # (amd-drm-next-7.3-2026-07-09: "Fix CWSR buffer mapping when in VRAM"); revisit/re-enable then.
+  boot.kernelParams = [ "amdgpu.cwsr_enable=0" ];
 }
