@@ -19,7 +19,6 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | vesktop hibernate hang | `home-manager/personal.nix:43` | 2026-07-12 | vesktop HW-accel works on AMD/Wayland |
 | electron-40 EOL insecure exception | `home-manager/home.nix:46` | 2026-07-17 | vesktop bumps electron |
 | Firefox profile path pin | `home-manager/personal.nix:108` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
-| neovim withRuby/withPython3 pin | `home-manager/terminal.nix:253` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
 | claude-code auto-compact window | `home-manager/terminal.nix:51` | 2026-06-23 | anthropics/claude-code#43989 resolves |
 | claude-code installation checks | `home-manager/terminal.nix:54` | 2026-06-23 | anthropics/claude-code#17289 resolves |
 | opencode lsp flag | `home-manager/personal.nix:137` | — | anomalyco/opencode#23566 resolves |
@@ -115,24 +114,6 @@ profile lives at the old path.
 
 ```nix
 configPath = ".mozilla/firefox";
-```
-
-**Added** — 2026-06-23
-
-**Remove when** — set up on a fresh `stateVersion` ≥ 26.05 install.
-
----
-
-### neovim withRuby/withPython3 pin
-
-**Issue** — home-manager flipped the neovim `withRuby` / `withPython3` defaults to `true`
-in 26.05; the existing setup doesn't need them.
-
-**Fix** — pin the pre-26.05 defaults. `home-manager/terminal.nix:253-255`
-
-```nix
-withRuby = false;
-withPython3 = false;
 ```
 
 **Added** — 2026-06-23
