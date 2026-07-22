@@ -28,12 +28,19 @@ Flake-based NixOS configuration managing two machines with standalone home-manag
 - `home-manager/terminal.nix` — Shell environment (Fish, Neovim, Git, Zellij, Ghostty, Claude Code CLI settings)
 - `overlays/default.nix` + `pkgs/default.nix` — Custom overlays and packages (currently empty templates)
 - `modules/` — NixOS and home-manager module exports (currently empty templates)
+- `workarounds.md` — Catalog of upstream-bug / stateVersion / hardware workarounds and when each can be dropped.
 
 ### Design Patterns
 - **Common + specific split**: `common.nix` holds shared config; `desktop.nix`/`laptop.nix` hold machine-specific overrides.
 - **Hardware configs are auto-generated**: Don't edit `hardware-configuration.nix` files directly.
 - **Home-manager is standalone**: Not a NixOS module. Has its own `homeConfigurations` in the flake and is rebuilt separately with `rehome`.
 - **User**: `ciferkey` on both machines.
+
+## Workarounds
+
+See [`workarounds.md`](workarounds.md) for the catalog of upstream-bug, `stateVersion`, and
+hardware workarounds (with `file:line` pointers and removal triggers). Update it whenever a
+workaround is added or removed.
 
 ## References
  - Home Manager options: https://nix-community.github.io/home-manager/options/home-manager/index.html
