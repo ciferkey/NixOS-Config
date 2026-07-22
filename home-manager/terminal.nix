@@ -31,7 +31,7 @@
 
   programs.claude-code = {
     enable = true;
-    #package = pkgs.claude-code-fhs;
+    package = pkgs.claude-code;
     enableMcpIntegration = true;
     mcpServers = {
       kagi = {

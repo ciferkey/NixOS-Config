@@ -124,6 +124,7 @@
 
   programs.opencode = {
     enable = true;
+    package = pkgs.opencode;
     enableMcpIntegration = true;
     extraPackages = [
       pkgs.basedpyright

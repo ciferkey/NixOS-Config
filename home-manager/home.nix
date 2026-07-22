@@ -29,16 +29,18 @@
       outputs.overlays.additions
       outputs.overlays.modifications
 
-      # You can also add overlays exported from other flakes:
-      inputs.opencode-nix.overlays.default
-      inputs.nix-claude-code.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
+      # Alias llm-agents' prebuilt (cache-backed) agent packages into pkgs so call
+      # sites can use pkgs.claude-code / pkgs.opencode / pkgs.omp.
+      # NB: use the .packages output, NOT llm-agents.overlays.shared-nixpkgs — that
+      # overlay rebuilds against our nixpkgs and forfeits the numtide binary cache.
+      (final: prev: {
+        inherit
+          (inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system})
+          claude-code
+          opencode
+          omp
+          ;
+      })
     ];
     # Configure your nixpkgs instance
     config = {
@@ -55,6 +57,7 @@
     cachix
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
+    omp 
     sox # for voice in claude code
     thunderbird
   ];

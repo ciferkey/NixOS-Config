@@ -35,17 +35,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode-nix = {
-      url = "github:dan-online/opencode-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # Packages claude-code, opencode, and omp (oh-my-pi) from one input, CI-built
+    # daily with a binary cache. Deliberately does NOT follow nixpkgs: following
+    # would forfeit the numtide cache and force local rebuilds.
+    llm-agents.url = "github:numtide/llm-agents.nix";
 
     nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
-
-    nix-claude-code = {
-      url = "github:ryoppippi/nix-claude-code";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     nvf = {
       url = "github:notashelf/nvf";
