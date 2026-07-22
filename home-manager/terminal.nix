@@ -114,14 +114,26 @@
     };
   };
 
-  home.packages = with pkgs; [
-    docker-compose
-    jq
-    python3
-    ripgrep-all
-    unzip
-    uv
-  ];
+  home.packages = let
+    # Query nxv's hosted index instead of maintaining a ~220MB local DB (which goes stale).
+    nxv-api = pkgs.symlinkJoin {
+      name = "nxv-api";
+      paths = [pkgs.nxv];
+      nativeBuildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/nxv --set NXV_API_URL https://nxv.urandom.io
+      '';
+    };
+  in
+    with pkgs; [
+      docker-compose
+      jq
+      nxv-api
+      python3
+      ripgrep-all
+      unzip
+      uv
+    ];
 
   programs.direnv = {
     enable = true;
