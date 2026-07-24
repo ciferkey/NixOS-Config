@@ -292,7 +292,7 @@
   programs.zellij = {
     enable = true;
     enableFishIntegration = true; # https://github.com/nix-community/home-manager/pull/6695clade
-    attachExistingSession = true;
+    attachExistingSession = false; # So drop down has own session, since no way to control session for dropdown.
     settings = {
       theme = "ansi";
       focus_follows_mouse = true;
