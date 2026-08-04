@@ -69,7 +69,6 @@
       model = "opus";
       permissions = {
         defaultMode = "plan";
-        deny = ["WebSearch"];
       };
       showClearContextOnPlanAccept = true;
       showThinkingSummaries = true;
