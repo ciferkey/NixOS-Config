@@ -48,11 +48,10 @@ workaround is added or removed.
  - **`nxv`** — preferred tool for nixpkgs package/version lookups (`nxv search <pkg>`, `nxv history <pkg>`).
    Configured in `home-manager/terminal.nix` in hosted-API mode (`NXV_API_URL=https://nxv.urandom.io`), so
    it queries the live hosted index — no ~220 MB local DB, no manual `nxv update` (needs network per query).
- - **mcp-nixos option search is broken.** The `mcp-nixos` server (`programs.mcp.servers.nixos`) returns no
-   results for home-manager / NixOS *option* searches because the HM docs moved to an mdBook site. Fix is in
-   draft at https://github.com/utensils/mcp-nixos/pull/174 (open/draft as of 2026-07-22). Until it lands,
-   look up options via the mdBook options page above. Note: `nxv` does **not** search options — package
-   versions only — so it is not a substitute for option search.
+ - **mcp-nixos Home Manager option search returns nothing** — the pinned 2.4.3 fetches the
+   now-empty `options.xhtml`. Use the mdBook options page above instead. NixOS, darwin, and
+   nixvim option search are unaffected and work normally. `nxv` does **not** search options —
+   package versions only. Details and removal trigger: [`workarounds.md`](workarounds.md).
 
  ## Conventions
   - Lint and format the nix files when making changes.
