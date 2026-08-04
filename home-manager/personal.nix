@@ -38,6 +38,7 @@
     pocket-casts
     jetbrains.pycharm
     jetbrains.rust-rover
+    rocmPackages.rocm-smi
     signal-desktop
     sone
     # --disable-gpu: vesktop's Electron GPU process holds an amdgpu DMA fence that never
@@ -107,19 +108,6 @@
     };
     # Pin pre-26.05 default path; remove on a fresh stateVersion >= 26.05 install.
     configPath = ".mozilla/firefox";
-  };
-
-  programs.hexchat = {
-    enable = true;
-    settings = {
-      irc_nick1 = "ciferkey";
-      irc_username = "ciferkey";
-    };
-    theme = pkgs.fetchzip {
-      url = "https://dl.hexchat.net/themes/Zenburn.hct#Zenburn.zip";
-      sha256 = "sha256-VIv+IeCwq+jq+F5yyz5J3CSCvQaNh07uc81kVNMqxsY=";
-      stripRoot = false;
-    };
   };
 
   programs.opencode = {

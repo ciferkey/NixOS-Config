@@ -32,6 +32,7 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | Framework tlp disabled for tuned | `nixie/laptop.nix:27` | 2025-08-29 | (intentional; keep while using tuned) |
 | esp32 plugdev group | `nixos/esp32.nix:9` | — | a module declares `plugdev` for us |
 | NetworkManager-wait-online disabled | `common.nix:78` | 2025-12-04 | boot no longer hangs on it |
+| uv standalone Python `/etc/ssl/cert.pem` | `common.nix:168` | 2026-08-04 | nixpkgs ships `/etc/ssl/cert.pem`, or python-build-standalone finds NixOS certs |
 
 ---
 
@@ -387,6 +388,45 @@ systemd.services.NetworkManager-wait-online.enable = false;
 
 **Remove when** — boot no longer hangs on it (or a service genuinely needs network-online
 ordering).
+
+---
+
+## TLS / certificates
+
+### uv standalone Python `/etc/ssl/cert.pem`
+
+**Issue** — uv (`home-manager/terminal.nix:140`) downloads **python-build-standalone**
+interpreters into `~/.local/share/uv/python/`. Those builds compile OpenSSL with
+`openssldir=/etc/ssl` (the Debian layout), so their compiled-in defaults are
+`SSL_CERT_FILE=/etc/ssl/cert.pem` and `SSL_CERT_DIR=/etc/ssl/certs` (looked up by *hashed*
+filename). NixOS satisfies neither: `nixos/modules/security/ca.nix` ships
+`/etc/ssl/certs/ca-bundle.crt`, `/etc/ssl/certs/ca-certificates.crt`, and
+`/etc/pki/tls/certs/ca-bundle.crt`, but no `/etc/ssl/cert.pem`, and `/etc/ssl/certs` holds
+only those bundles — no hash symlinks. Both lookup paths miss, so every HTTPS call from a
+uv-managed Python fails with `CERTIFICATE_VERIFY_FAILED`.
+
+**Fix** — provide the compatibility path system-wide. `common.nix:165-168`
+
+```nix
+environment.etc."ssl/cert.pem".source = config.security.pki.caBundle;
+```
+
+Sourced from `config.security.pki.caBundle` (the read-only store path `ca.nix` itself uses)
+rather than chaining through another `/etc` symlink; this also picks up
+`security.pki.certificateFiles` additions and the `useCompatibleBundle` setting
+automatically.
+
+**Added** — 2026-08-04
+
+**Remove when** — nixpkgs ships `/etc/ssl/cert.pem` itself (NixOS/nixpkgs#8247, the open
+meta-issue on how libs/apps find certs by default), or python-build-standalone learns to find
+NixOS' cert store. Note the merged fix for python-build-standalone#858 reads OpenSSL config
+from `/etc/pki/tls` when present — NixOS has no `/etc/pki/tls/openssl.cnf`, so it does not
+cover us. Both sides are long-lived; treat this as durable.
+
+**Link** —
+https://discourse.nixos.org/t/fix-ssl-sslcertverificationerror-with-uvs-standalone-python/71138
+and https://github.com/astral-sh/python-build-standalone/issues/858
 
 ---
 

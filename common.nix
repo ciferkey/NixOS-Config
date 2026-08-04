@@ -162,6 +162,11 @@
     sudo.u2fAuth = true;
   };
 
+  # python-build-standalone (uv's managed Pythons) builds OpenSSL with openssldir=/etc/ssl,
+  # so it looks for /etc/ssl/cert.pem, which NixOS does not provide. Without this, every
+  # HTTPS call from a uv-managed Python fails with CERTIFICATE_VERIFY_FAILED.
+  environment.etc."ssl/cert.pem".source = config.security.pki.caBundle;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
