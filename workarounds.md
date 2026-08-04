@@ -24,7 +24,8 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | opencode lsp flag | `home-manager/personal.nix:137` | — | anomalyco/opencode#23566 resolves |
 | opencode kagi auth header token rewrite | `home-manager/personal.nix:151` | 2026-07-17 | opencode's `{file:}` resolver gains shell expansion |
 | opencode experimental-subagents env var | `home-manager/personal.nix:166` | 2026-07-17 | a scoped env mechanism exists |
-| zellij fish integration | `home-manager/terminal.nix:275` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
+| thunderbird-mcp two-half version skew | `home-manager/terminal.nix:97` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
+| zellij fish integration | `home-manager/terminal.nix:300` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
 | SDDM → KWallet startup fix | `common.nix:153` | 2026-01-13 | KWallet starts under SDDM without `forceRun` |
 | Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:11` | 2025-08-21 | monitor reports a usable EDID on AMD |
 | Framework ambient light sensor | `nixie/laptop.nix:37` | 2026-02-27 | bugs.kde.org#502122 resolves |
@@ -209,6 +210,44 @@ home.sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
 **Added** — 2026-07-17
 
 **Remove when** — a scoped env mechanism (shell wrapper / upstream env option) exists.
+
+---
+
+### thunderbird-mcp two-half version skew
+
+**Issue** — thunderbird-mcp ships as two halves that must agree on a protocol: the Node stdio
+bridge (`pkgs.thunderbird-mcp`, pinned to 0.7.4 by the locked nixpkgs) and a Thunderbird
+add-on (XPI) that runs the in-Thunderbird HTTP server. Only the bridge is declared here. The
+add-on is installed manually through Thunderbird's UI and, from v0.7.3 on, **self-updates**
+via Thunderbird's add-on updater — so it can move ahead of the Nix-pinned bridge with no
+signal, and there is no version-negotiation handshake to catch the mismatch.
+
+The add-on isn't declarable in this config: it's a GitHub release asset, not in the Nix output
+(the source tarball's `files` list omits `dist/`), and this config uses `pkgs.thunderbird` as a
+plain package rather than the `programs.thunderbird` module — managing extensions there would
+mean declaring profiles and accounts. Pinning an XPI in the store would also fight the
+self-updater.
+
+**Fix** — none available; documented instead. The bridge is declared at
+`home-manager/terminal.nix:97-102`:
+
+```nix
+servers.thunderbird = {
+  command = lib.getExe pkgs.thunderbird-mcp;
+  enabled = true;
+};
+```
+
+Symptom of skew: the bridge connects (`/tmp/thunderbird-mcp/connection.json` exists) but tool
+calls fail or return malformed results. Realign by bumping the nixpkgs pin, or by installing
+the XPI matching the bridge version from the upstream releases page.
+
+**Added** — 2026-07-30
+
+**Remove when** — upstream ships a version-negotiation handshake between bridge and add-on, or
+the add-on becomes declaratively manageable.
+
+**Link** — https://github.com/TKasperczyk/thunderbird-mcp
 
 ---
 

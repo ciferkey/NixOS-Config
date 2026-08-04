@@ -94,6 +94,12 @@
       command = lib.getExe pkgs.mcp-nixos;
       enabled = true; # keep explicit so both clients list it as enabled
     };
+    servers.thunderbird = {
+      # Bridge only; the Thunderbird add-on half is installed through
+      # Thunderbird's UI and self-updates (see workarounds.md).
+      command = lib.getExe pkgs.thunderbird-mcp;
+      enabled = true;
+    };
   };
 
   programs.btop = {
@@ -296,6 +302,7 @@
     settings = {
       theme = "ansi";
       focus_follows_mouse = true;
+      show_startup_tips = false;
     };
   };
 
