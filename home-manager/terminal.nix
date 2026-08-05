@@ -195,7 +195,7 @@
       alias = {
         cam = "commit -am";
         ch = "checkout HEAD --";
-        d = "-p diff";
+        d = "-p diff HEAD";
         lom = "pull origin master";
         pom = "push origin master";
         rh = "reset --hard HEAD";
