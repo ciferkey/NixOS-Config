@@ -242,28 +242,28 @@
     settings.vim = {
       vimAlias = true;
 
-      # ---- faithful carry-over of the old config ----
       lineNumberMode = "number"; # was: set nu
-      options.mouse = "a"; # was: set mouse=a
+      options = {
+        mouse = "a"; 
+        shiftwidth = 2;
+        softtabstop = -1; # Tab follows shiftwidth
+        expandtab = true;
+      };
 
-      # was: colorscheme zenburn (zenburn is not a built-in nvf theme)
       theme.enable = false;
       extraPlugins.zenburn = {
         package = pkgs.vimPlugins.zenburn;
         setup = "vim.cmd[[colorscheme zenburn]]";
       };
 
-      # was: nvim-treesitter.withAllGrammars
       treesitter.enable = true;
       treesitter.grammars = pkgs.vimPlugins.nvim-treesitter.allGrammars;
 
-      # was: vim-nix (nix syntax/treesitter; now also gets LSP + formatting)
       languages.nix.enable = true;
+      utility.sleuth.enable = true;
 
-      # was: extraPackages = [ ripgrep wl-clipboard ]
       extraPackages = [
         pkgs.ripgrep
-        pkgs.wl-clipboard
       ];
 
       # ---- light IDE layer (new) ----
@@ -275,6 +275,8 @@
       statusline.lualine.enable = true; # statusline
     };
   };
+
+  programs.pandoc.enable = true;
 
   # was: programs.neovim.defaultEditor = true (nvf has no defaultEditor option)
   home.sessionVariables.EDITOR = "nvim";

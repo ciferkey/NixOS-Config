@@ -26,6 +26,7 @@
     appimage-run
     ente-auth
     feishin
+    forgejo-cli
     freetube
     jellyfin-media-player
     #libreoffice-qt-fresh
@@ -55,6 +56,8 @@
 
     android-studio
     jdk17
+    
+    wl-clipboard
   ];
 
   home = {
