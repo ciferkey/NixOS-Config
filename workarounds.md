@@ -33,7 +33,6 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | esp32 plugdev group | `nixos/esp32.nix:9` | — | a module declares `plugdev` for us |
 | NetworkManager-wait-online disabled | `common.nix:78` | 2025-12-04 | boot no longer hangs on it |
 | uv standalone Python `/etc/ssl/cert.pem` | `common.nix:168` | 2026-08-04 | nixpkgs ships `/etc/ssl/cert.pem`, or python-build-standalone finds NixOS certs |
-| mcp-nixos HM option search | `home-manager/terminal.nix:92` | 2026-08-04 | mcp-nixos release > 2.4.3 with the print.html loader is in the pinned nixpkgs |
 
 ---
 
@@ -428,38 +427,6 @@ cover us. Both sides are long-lived; treat this as durable.
 **Link** —
 https://discourse.nixos.org/t/fix-ssl-sslcertverificationerror-with-uvs-standalone-python/71138
 and https://github.com/astral-sh/python-build-standalone/issues/858
-
----
-
-## Tooling
-
-### mcp-nixos Home Manager option search
-
-**Issue** — the `mcp-nixos` server (`home-manager/terminal.nix:92-95`) returns nothing for
-Home Manager option queries: `search`, `browse`, and `stats` on `source=home-manager` all come
-back empty. The pinned 2.4.3 fetches `HOME_MANAGER_URL =
-"https://nix-community.github.io/home-manager/options.xhtml"` (`config.py:34`), which after the
-mdBook migration is a redirect stub containing only "Redirecting to
-options/home-manager/index.html." — no options to parse.
-
-Scope is Home Manager **only**. NixOS option search, nix-darwin, and nixvim all work; don't
-avoid the server wholesale.
-
-**Fix** — none in this config; documented instead. Look Home Manager options up via the mdBook
-options page (linked in `CLAUDE.md`). `nxv` is packages/versions only and is not a substitute.
-
-**Added** — 2026-08-04
-
-**Remove when** — an mcp-nixos release later than 2.4.3 carrying the `print.html` loader
-reaches the pinned nixpkgs. Upstream `main` already sets `HOME_MANAGER_URL` to
-`https://nix-community.github.io/home-manager/print.html`, which is verified to serve the full
-~4.1 MB option catalogue — but the latest release is v2.4.3 (2026-04-25), which predates it.
-Re-test with a `source=home-manager` search after a version bump.
-
-Note: PR #174 was closed **unmerged** on 2026-08-04 ("the current Home Manager print.html
-loader is the implementation we re-verified and are retaining") — do not wait on it.
-
-**Link** — https://github.com/utensils/mcp-nixos/pull/174 (closed, unmerged)
 
 ---
 
