@@ -58,6 +58,7 @@
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
     omp 
+    poppler-utils # for pdf handling
     sox # for voice in claude code
     thunderbird
   ];
