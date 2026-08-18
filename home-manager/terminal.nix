@@ -234,6 +234,10 @@
     enable = true;
   };
 
+  programs.lazygit = {
+    enable = true;
+  };
+
   programs.navi = {
     enable = true;
   };
