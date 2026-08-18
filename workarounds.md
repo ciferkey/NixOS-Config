@@ -27,6 +27,7 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | thunderbird-mcp two-half version skew | `home-manager/terminal.nix:97` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
 | zellij fish integration | `home-manager/terminal.nix:300` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
 | SDDM → KWallet startup fix | `common.nix:153` | 2026-01-13 | KWallet starts under SDDM without `forceRun` |
+| Firefox forced onto XWayland (KWin `wl_fixes` v2) | `home-manager/personal.nix:171` | 2026-08-17 | Firefox fixes `ack_global_remove`, or KDE reverts/fixes `wl_fixes` v2 |
 | Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:11` | 2025-08-21 | monitor reports a usable EDID on AMD |
 | Framework ambient light sensor | `nixie/laptop.nix:37` | 2026-02-27 | bugs.kde.org#502122 resolves |
 | Framework tlp disabled for tuned | `nixie/laptop.nix:27` | 2025-08-29 | (intentional; keep while using tuned) |
@@ -295,6 +296,74 @@ kde.kwallet = {
 **Added** — 2026-01-13 / 2026-02-11
 
 **Remove when** — KWallet starts correctly under SDDM without `forceRun`.
+
+---
+
+### Firefox forced onto XWayland (KWin `wl_fixes` v2)
+
+**Issue** — since the 2026-08-10 rebuild took KWin 6.7.3 → 6.7.4, Firefox's **parent**
+process aborts 1–3 times per day, taking every tab with it. KWin 6.7.4 advertises `wl_fixes`
+v2; Firefox 153 acks global removals against it, and a fraction of those acks are rejected
+with `error 0: the given registry did not announce global N`. Firefox turns any fatal Wayland
+protocol error into an `abort()` in `WlLogHandler`. Nine crashes 2026-08-12 → 2026-08-17.
+
+Not close to an upstream fix: every Firefox channel including 156.0a1 Nightly still crashes
+(847 occurrences on crash-stats) and nixpkgs unstable still ships KWin 6.7.4.
+
+**Fix** — force Firefox onto XWayland so it never binds `wl_fixes`.
+`home-manager/personal.nix:165-171`
+
+```nix
+systemd.user.sessionVariables.MOZ_ENABLE_WAYLAND = "0";
+```
+
+Notes on the shape of this fix:
+
+- **Not a package wrap.** The vesktop `symlinkJoin` + `wrapProgram` pattern doesn't work
+  here: home-manager's firefox module calls `package.override` on whatever it's handed
+  (`mkFirefoxModule.nix:204`), and a `symlinkJoin` output has no `.override`, so evaluation
+  fails. `wrapFirefox` also exposes no env-var argument, so there's no supported way to
+  inject it through `firefox.override` either. `programs.firefox.package` is left untouched
+  — no rebuild, so `rehome` is near-instant.
+- **Why this wins over the wrapper's own value:** nixpkgs sets it with
+  `--set-default MOZ_ENABLE_WAYLAND 1`
+  (`pkgs/applications/networking/browsers/firefox/wrapper.nix:348-350`), emitting
+  `export MOZ_ENABLE_WAYLAND=${MOZ_ENABLE_WAYLAND-'1'}`, so an externally-set `0` takes
+  precedence.
+- **`systemd.user.sessionVariables`, not `home.sessionVariables`:** the latter lands in
+  `hm-session-vars.sh`, which a graphical KDE session does not reliably source. The former
+  writes `environment.d(5)`, which `systemd --user` reads and Plasma 6 imports — so it
+  reaches Firefox launched from the app menu or KRunner, not just from a shell. It is read at
+  `systemd --user` startup, so **a full logout/login is required**; restarting Firefox is not
+  enough.
+- **Blast radius:** any other Gecko app picks it up too — in practice just Thunderbird,
+  which has its own Wayland topcrash (bug 1863047, `topcrash-thunderbird`), so that side
+  effect is neutral at worst.
+- **Cost of XWayland here:** near zero — a single 1080p BenQ XL2420G at 100% scale, so no
+  fractional-scaling blur, and VA-API decode is unaffected.
+
+Verify: `systemctl --user show-environment | grep MOZ_ENABLE_WAYLAND` prints
+`MOZ_ENABLE_WAYLAND=0`; `about:support` → Window Protocol reads `xwayland` (or
+`xprop -name "Mozilla Firefox"` returns a window, which it can't for a native Wayland one);
+and `journalctl --since today | grep wl_fixes` stays empty.
+
+**Added** — 2026-08-17
+
+**Remove when** — Firefox ships the `ack_global_remove` fix (watch the filed Mozilla bug),
+or KDE reverts/fixes the v2 advertisement. The pre-fix rate was 1–3 crashes/day, so a clean
+48 hours after reverting is meaningful evidence that upstream landed it.
+
+**Link** — https://bugzilla.mozilla.org/show_bug.cgi?id=2024153 (the change that introduced
+the ack path, shipped in Firefox 151). The Mozilla and KDE bugs for this crash are being filed
+now — add their URLs here once they have numbers.
+
+Considered and rejected:
+
+- **Rolling back to generation 209** (KWin 6.7.3) — restores native Wayland, but gives up
+  system updates and blocks future rebuilds indefinitely.
+- **Patching out `wl_fixes` v2** via the existing `nixpkgs-patcher` wiring — most surgical,
+  but means a large from-source KDE rebuild with no binary cache, to revert a legitimate
+  upstream race fix.
 
 ---
 

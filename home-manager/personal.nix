@@ -56,7 +56,7 @@
 
     android-studio
     jdk17
-    
+
     wl-clipboard
   ];
 
@@ -161,6 +161,14 @@
   # nor wraps the binary with --set. So this must come from the shell environment;
   # set globally until a scoped mechanism (shell wrapper / upstream env option) exists.
   home.sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
+
+  # Force Firefox onto XWayland so it never binds wl_fixes: KWin 6.7.4 advertises
+  # wl_fixes v2, Firefox 153's ack_global_remove bookkeeping mismatches, and the
+  # resulting protocol error aborts the parent process (all tabs). nixpkgs' wrapper
+  # uses --set-default, so an externally-set 0 wins. systemd.user.sessionVariables
+  # (environment.d) rather than home.sessionVariables (hm-session-vars.sh, which a
+  # graphical KDE session does not reliably source). See workarounds.md.
+  systemd.user.sessionVariables.MOZ_ENABLE_WAYLAND = "0";
 
   xdg.configFile."opencode/oh-my-opencode-slim.jsonc".source = ./oh-my-opencode-slim.jsonc;
 
