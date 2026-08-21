@@ -57,13 +57,21 @@
     cachix
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
-    omp 
+    omp
     poppler-utils # for pdf handling
     sox # for voice in claude code
-    thunderbird
   ];
 
   programs.home-manager.enable = true;
+
+  programs.thunderbird = {
+    enable = true;
+    settings = {
+      "intl.date_time.pattern_override.time_short" = "h:mm a";
+      "intl.date_time.pattern_override.time_medium" = "h:mm:ss a";
+    };
+    profiles.default.isDefault = true;
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";

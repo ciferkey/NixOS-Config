@@ -69,6 +69,10 @@
       model = "opus";
       permissions = {
         defaultMode = "plan";
+        allow = [
+          "mcp__plugin_hm_kagi"
+          "mcp__plugin_hm_nixos"
+        ];
       };
       showClearContextOnPlanAccept = true;
       showThinkingSummaries = true;
@@ -166,6 +170,7 @@
       }
     ];
     shellAliases = {
+      charm = "pycharm . >/dev/null 2>&1 & disown";
       g = "git";
       rbaz = "sudo efibootmgr -n 0 && sudo reboot now";
       rebuild = "nh os switch .";
@@ -249,7 +254,7 @@
 
       lineNumberMode = "number"; # was: set nu
       options = {
-        mouse = "a"; 
+        mouse = "a";
         shiftwidth = 2;
         softtabstop = -1; # Tab follows shiftwidth
         expandtab = true;
