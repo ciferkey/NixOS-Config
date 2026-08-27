@@ -69,6 +69,13 @@
     settings = {
       "intl.date_time.pattern_override.time_short" = "h:mm a";
       "intl.date_time.pattern_override.time_medium" = "h:mm:ss a";
+
+      # No new-mail indicators: popup, sound, badge, tray icon.
+      "mail.biff.show_alert" = false;
+      "mail.biff.play_sound" = false;
+      "mail.biff.show_badge" = false;
+      "mail.biff.show_tray_icon" = false;
+      "mail.biff.show_tray_icon_always" = false;
     };
     profiles.default.isDefault = true;
   };
