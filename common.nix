@@ -43,7 +43,7 @@
     # Enable flakes and automatically clean up the nix store
     settings = {
       auto-optimise-store = true;
-      experimental-features = "nix-command flakes";
+      experimental-features = ["nix-command" "flakes"];
       max-jobs = 4;
       cores = 4;
       substituters = ["https://cache.numtide.com"];
@@ -230,6 +230,29 @@
       enable = true;
       #autoEnable = false; this mysteriously stopped working
       enableOnBoot = false;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+        flags = [
+          "--all"
+          "--filter"
+          "until=720h"
+        ];
+      };
+      daemon.settings.builder.gc = {
+        enabled = true;
+        defaultKeepStorage = "20GB";
+      };
+    };
+  };
+
+  # clean here instead of on HM in order to remove all gc roots 
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      dates = "weekly";
+      extraArgs = "--keep-since 14d --keep 3 --keep-one";
     };
   };
 
