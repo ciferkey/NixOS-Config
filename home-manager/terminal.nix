@@ -51,7 +51,7 @@
         CLAUDE_CODE_AUTO_COMPACT_WINDOW = "1000000"; # https://github.com/anthropics/claude-code/issues/43989
         CLAUDE_CODE_ENABLE_AWAY_SUMMARY="0";
         CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS = "1";
-        CLAUDE_CODE_NO_FLICKER = 1;
+        CLAUDE_CODE_NO_FLICKER = "1";
         DISABLE_INSTALLATION_CHECKS = "1"; # https://github.com/anthropics/claude-code/issues/17289
       };
       alwaysThinkingEnabled = true;

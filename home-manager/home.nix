@@ -76,6 +76,9 @@
       "mail.biff.show_badge" = false;
       "mail.biff.show_tray_icon" = false;
       "mail.biff.show_tray_icon_always" = false;
+
+      # No calendar reminder popup window.
+      "calendar.alarms.show" = false;
     };
     profiles.default.isDefault = true;
   };
