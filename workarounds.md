@@ -15,19 +15,18 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 
 | Workaround | File | Added | Remove when |
 |---|---|---|---|
-| Obsidian electron_41 crash | `home-manager/personal.nix:33` | 2026-07-17 | nixpkgs obsidian ships a patched electron_41 |
-| vesktop hibernate hang | `home-manager/personal.nix:43` | 2026-07-12 | vesktop HW-accel works on AMD/Wayland |
+| Obsidian electron_41 crash | `home-manager/personal.nix:34` | 2026-07-17 | nixpkgs obsidian ships a patched electron_41 |
+| vesktop hibernate hang | `home-manager/personal.nix:45` | 2026-07-12 | vesktop HW-accel works on AMD/Wayland |
 | electron-40 EOL insecure exception | `home-manager/home.nix:46` | 2026-07-17 | vesktop bumps electron |
-| Firefox profile path pin | `home-manager/personal.nix:108` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
-| claude-code auto-compact window | `home-manager/terminal.nix:51` | 2026-06-23 | anthropics/claude-code#43989 resolves |
-| claude-code installation checks | `home-manager/terminal.nix:54` | 2026-06-23 | anthropics/claude-code#17289 resolves |
-| opencode lsp flag | `home-manager/personal.nix:137` | — | anomalyco/opencode#23566 resolves |
-| opencode kagi auth header token rewrite | `home-manager/personal.nix:151` | 2026-07-17 | opencode's `{file:}` resolver gains shell expansion |
-| opencode experimental-subagents env var | `home-manager/personal.nix:166` | 2026-07-17 | a scoped env mechanism exists |
-| thunderbird-mcp two-half version skew | `home-manager/terminal.nix:97` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
-| zellij fish integration | `home-manager/terminal.nix:300` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
+| Firefox profile path pin | `home-manager/personal.nix:112` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
+| claude-code auto-compact window | `home-manager/terminal.nix:49` | 2026-06-23 | anthropics/claude-code#43989 resolves |
+| claude-code installation checks | `home-manager/terminal.nix:53` | 2026-06-23 | anthropics/claude-code#17289 resolves |
+| opencode lsp flag | `home-manager/personal.nix:129` | — | anomalyco/opencode#23566 resolves |
+| opencode experimental-subagents env var | `home-manager/personal.nix:146` | 2026-07-17 | a scoped env mechanism exists |
+| thunderbird-mcp two-half version skew | `home-manager/terminal.nix:104` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
+| zellij fish integration | `home-manager/terminal.nix:314` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
 | SDDM → KWallet startup fix | `common.nix:153` | 2026-01-13 | KWallet starts under SDDM without `forceRun` |
-| Firefox forced onto XWayland (KWin `wl_fixes` v2) | `home-manager/personal.nix:171` | 2026-08-17 | Firefox fixes `ack_global_remove`, or KDE reverts/fixes `wl_fixes` v2 |
+| Firefox forced onto XWayland (KWin `wl_fixes` v2) | `home-manager/personal.nix:153` | 2026-08-17 | Firefox fixes `ack_global_remove`, or KDE reverts/fixes `wl_fixes` v2 |
 | Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:11` | 2025-08-21 | monitor reports a usable EDID on AMD |
 | Framework ambient light sensor | `nixie/laptop.nix:37` | 2026-02-27 | bugs.kde.org#502122 resolves |
 | Framework tlp disabled for tuned | `nixie/laptop.nix:27` | 2025-08-29 | (intentional; keep while using tuned) |
@@ -44,7 +43,7 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 **Issue** — `electron_41` (obsidian's bundled default) crashes on startup with a
 WASM-streaming renderer fault.
 
-**Fix** — override to `electron_42` (>= 42.4.1 has the patch). `home-manager/personal.nix:33-36`
+**Fix** — override to `electron_42` (>= 42.4.1 has the patch). `home-manager/personal.nix:34-37`
 
 ```nix
 (obsidian.override {electron = electron_42;})
@@ -65,7 +64,7 @@ during the hibernate freeze → `amdgpu_vm_fini` / `dma_fence_wait_timeout` hang
 hibernate aborts with "Device or resource busy".
 
 **Fix** — wrap the binary with `--disable-gpu` via `symlinkJoin` + `wrapProgram`, forcing
-the GPU off so hibernate works with vesktop running. `home-manager/personal.nix:43-53`
+the GPU off so hibernate works with vesktop running. `home-manager/personal.nix:45-55`
 
 ```nix
 (pkgs.symlinkJoin {
@@ -113,7 +112,7 @@ a fresh `stateVersion` ≥ 26.05 install.
 **Issue** — home-manager changed the default Firefox config path in 26.05; the existing
 profile lives at the old path.
 
-**Fix** — pin the pre-26.05 path. `home-manager/personal.nix:108-109`
+**Fix** — pin the pre-26.05 path. `home-manager/personal.nix:112-113`
 
 ```nix
 configPath = ".mozilla/firefox";
@@ -131,7 +130,7 @@ configPath = ".mozilla/firefox";
 
 **Issue** — the default auto-compact window triggers context compaction earlier than wanted.
 
-**Fix** — raise it via env. `home-manager/terminal.nix:51`
+**Fix** — raise it via env. `home-manager/terminal.nix:49`
 
 ```nix
 CLAUDE_CODE_AUTO_COMPACT_WINDOW = "1000000";
@@ -147,7 +146,7 @@ CLAUDE_CODE_AUTO_COMPACT_WINDOW = "1000000";
 
 **Issue** — claude-code's installation checks misbehave under the Nix-managed install.
 
-**Fix** — disable them via env. `home-manager/terminal.nix:54`
+**Fix** — disable them via env. `home-manager/terminal.nix:53`
 
 ```nix
 DISABLE_INSTALLATION_CHECKS = "1";
@@ -163,7 +162,7 @@ DISABLE_INSTALLATION_CHECKS = "1";
 
 **Issue** — opencode LSP integration needs to be explicitly enabled to work as expected.
 
-**Fix** — set the flag. `home-manager/personal.nix:137`
+**Fix** — set the flag. `home-manager/personal.nix:129`
 
 ```nix
 lsp = true;
@@ -175,27 +174,6 @@ lsp = true;
 
 ---
 
-### opencode kagi auth header token rewrite
-
-**Issue** — opencode's `{file:}` resolver can't shell-expand `${XDG_RUNTIME_DIR}` in the
-agenix secret path, and it trims file contents (dropping the secret's trailing newline).
-
-**Fix** — `lib.replaceStrings` rewrites `${XDG_RUNTIME_DIR}` to opencode's own `{env:}`
-token, which runs in the env pass before the file pass. `home-manager/personal.nix:151-157`
-
-```nix
-headers.Authorization = "Bearer {file:${
-  lib.replaceStrings ["\${XDG_RUNTIME_DIR}"] ["{env:XDG_RUNTIME_DIR}"]
-  config.age.secrets.kagi-api-key.path
-}}";
-```
-
-**Added** — 2026-07-17
-
-**Remove when** — opencode's `{file:}` resolver gains shell expansion.
-
----
-
 ### opencode experimental-subagents env var
 
 **Issue** — opencode reads `OPENCODE_EXPERIMENTAL_*` from the process environment, not its
@@ -203,7 +181,7 @@ config file (`opencode.json` has no `env` field, unlike claude-code's settings),
 upstream `programs.opencode` home-manager module exposes no env option nor wraps the binary
 with `--set`.
 
-**Fix** — set it globally in the shell environment. `home-manager/personal.nix:166-171`
+**Fix** — set it globally in the shell environment. `home-manager/personal.nix:146-151`
 
 ```nix
 home.sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
@@ -231,7 +209,7 @@ mean declaring profiles and accounts. Pinning an XPI in the store would also fig
 self-updater.
 
 **Fix** — none available; documented instead. The bridge is declared at
-`home-manager/terminal.nix:97-102`:
+`home-manager/terminal.nix:104-107`:
 
 ```nix
 servers.thunderbird = {
@@ -257,7 +235,7 @@ the add-on becomes declaratively manageable.
 
 **Issue** — home-manager's zellij module didn't wire up fish integration until PR #6695.
 
-**Fix** — enable it explicitly. `home-manager/terminal.nix:275`
+**Fix** — enable it explicitly. `home-manager/terminal.nix:314`
 
 ```nix
 enableFishIntegration = true;
@@ -311,7 +289,7 @@ Not close to an upstream fix: every Firefox channel including 156.0a1 Nightly st
 (847 occurrences on crash-stats) and nixpkgs unstable still ships KWin 6.7.4.
 
 **Fix** — force Firefox onto XWayland so it never binds `wl_fixes`.
-`home-manager/personal.nix:165-171`
+`home-manager/personal.nix:153-159`
 
 ```nix
 systemd.user.sessionVariables.MOZ_ENABLE_WAYLAND = "0";
@@ -464,7 +442,7 @@ ordering).
 
 ### uv standalone Python `/etc/ssl/cert.pem`
 
-**Issue** — uv (`home-manager/terminal.nix:140`) downloads **python-build-standalone**
+**Issue** — uv (`home-manager/terminal.nix:156`) downloads **python-build-standalone**
 interpreters into `~/.local/share/uv/python/`. Those builds compile OpenSSL with
 `openssldir=/etc/ssl` (the Debian layout), so their compiled-in defaults are
 `SSL_CERT_FILE=/etc/ssl/cert.pem` and `SSL_CERT_DIR=/etc/ssl/certs` (looked up by *hashed*

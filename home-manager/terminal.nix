@@ -5,7 +5,14 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  kagi-mcp = pkgs.writeShellScript "kagi-mcp" ''
+    export API_ACCESS_TOKEN="$(cat ${config.age.secrets.kagi-api-key.path})"
+    exec ${lib.getExe pkgs.mcp-proxy} \
+      --transport streamablehttp \
+      https://mcp.kagi.com/mcp
+  '';
+in {
   age.secrets.kagi-api-key = {
     rekeyFile = ./secrets/kagi_api_key.age;
   };
@@ -33,23 +40,10 @@
     enable = true;
     package = pkgs.claude-code;
     enableMcpIntegration = true;
-    mcpServers = {
-      kagi = {
-        type = "http";
-        url = "https://mcp.kagi.com/mcp";
-        headersHelper = let
-          authHeader = pkgs.writeShellScript "kagi-mcp-auth" ''
-            ${pkgs.jq}/bin/jq -nc \
-              --arg key "$(cat ${config.age.secrets.kagi-api-key.path})" \
-              '{"Authorization": "Bearer \($key)"}'
-          '';
-        in "${authHeader}";
-      };
-    };
     settings = {
       env = {
         CLAUDE_CODE_AUTO_COMPACT_WINDOW = "1000000"; # https://github.com/anthropics/claude-code/issues/43989
-        CLAUDE_CODE_ENABLE_AWAY_SUMMARY="0";
+        CLAUDE_CODE_ENABLE_AWAY_SUMMARY = "0";
         CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS = "1";
         CLAUDE_CODE_NO_FLICKER = "1";
         DISABLE_INSTALLATION_CHECKS = "1"; # https://github.com/anthropics/claude-code/issues/17289
@@ -94,6 +88,10 @@
 
   programs.mcp = {
     enable = true;
+    servers.kagi = {
+      command = "${kagi-mcp}";
+      enabled = true;
+    };
     servers.nixos = {
       command = lib.getExe pkgs.mcp-nixos;
       enabled = true; # keep explicit so both clients list it as enabled
@@ -102,6 +100,15 @@
       # Bridge only; the Thunderbird add-on half is installed through
       # Thunderbird's UI and self-updates (see workarounds.md).
       command = lib.getExe pkgs.thunderbird-mcp;
+      enabled = true;
+    };
+  };
+
+  # omp has no home-manager module and does not read ~/.config/mcp/mcp.json,
+  # so hand it the same bridge directly. No secret in the file itself.
+  home.file.".omp/agent/mcp.json".text = builtins.toJSON {
+    mcpServers.kagi = {
+      command = "${kagi-mcp}";
       enabled = true;
     };
   };

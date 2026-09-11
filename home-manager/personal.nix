@@ -136,18 +136,6 @@
         explore.disable = true;
         general.disable = true;
       };
-      mcp.kagi = {
-        type = "remote";
-        url = "https://mcp.kagi.com/mcp";
-        enabled = true;
-        # opencode's {file:} resolver can't shell-expand ${XDG_RUNTIME_DIR}; rewrite it to
-        # opencode's own {env:} token (opencode runs the env pass before the file pass, and
-        # trims file contents, dropping the secret's trailing newline).
-        headers.Authorization = "Bearer {file:${
-          lib.replaceStrings ["\${XDG_RUNTIME_DIR}"] ["{env:XDG_RUNTIME_DIR}"]
-          config.age.secrets.kagi-api-key.path
-        }}";
-      };
     };
     tui = {
       theme = "zenburn";
