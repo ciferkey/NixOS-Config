@@ -246,7 +246,7 @@
     };
   };
 
-  # clean here instead of on HM in order to remove all gc roots 
+  # clean here instead of on HM in order to remove all gc roots
   programs.nh = {
     enable = true;
     clean = {

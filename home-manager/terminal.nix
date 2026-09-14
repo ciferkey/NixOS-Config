@@ -113,6 +113,10 @@ in {
     };
   };
 
+  # omp TUI colors that follow the terminal's ANSI palette instead of
+  # hardcoded hex, so they match whatever ghostty theme is active.
+  home.file.".omp/agent/themes/terminal.json".source = ./omp-terminal-theme.json;
+
   programs.btop = {
     enable = true;
     package = pkgs.btop.override {rocmSupport = true;};
