@@ -55,6 +55,7 @@
 
   home.packages = with pkgs; [
     cachix
+    glow
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
     omp

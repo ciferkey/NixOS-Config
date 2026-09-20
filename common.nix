@@ -62,11 +62,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Zswap
-  boot.initrd.systemd.enable = true;
-  boot.zswap = {
-    enable = true;
-    compressor = "lz4";
-  };
+  boot.zswap.enable = true;
   boot.kernel.sysctl."vm.swappiness" = 100;
 
   # Firmware
