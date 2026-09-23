@@ -38,11 +38,9 @@
   # See https://bugs.kde.org/show_bug.cgi?id=502122#c4
   hardware.sensor.iio.enable = true;
 
-  # amdgpu.cwsr_enable=0: GFX11.5 (Radeon 890M) has broken CWSR (Compute Wave Save/Restore) that
-  # wedges the MES scheduler so GPU fences never signal. During the hibernate freeze that surfaces
-  # as amdgpu_vm_fini/dma_fence_wait_timeout: any GPU-accelerated app "refuses to freeze" and
-  # hibernate aborts "Device or resource busy". Disabling CWSR is the documented workaround
-  # (ROCm #5590/#5724, Framework AMD AI 300 threads). Proper fix targets kernel ~7.3
-  # (amd-drm-next-7.3-2026-07-09: "Fix CWSR buffer mapping when in VRAM"); revisit/re-enable then.
+  # GFX11.5 CWSR wedges the MES scheduler; revisit when the kernel ~7.3 fix lands.
   boot.kernelParams = ["amdgpu.cwsr_enable=0"];
+
+  # Image is written either way; S5 poweroff avoids the S4 abort that wedges amdgpu.
+  systemd.sleep.settings.Sleep.HibernateMode = "shutdown";
 }

@@ -16,7 +16,7 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | Workaround | File | Added | Remove when |
 |---|---|---|---|
 | Obsidian electron_41 crash | `home-manager/personal.nix:34` | 2026-07-17 | nixpkgs obsidian ships a patched electron_41 |
-| vesktop hibernate hang | `home-manager/personal.nix:45` | 2026-07-12 | vesktop HW-accel works on AMD/Wayland |
+| vesktop hibernate hang (GPU-wedge symptom) | `home-manager/personal.nix:45` | 2026-07-12 | vesktop HW-accel works on AMD/Wayland |
 | electron-40 EOL insecure exception | `home-manager/home.nix:46` | 2026-07-17 | vesktop bumps electron |
 | Firefox profile path pin | `home-manager/personal.nix:112` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
 | claude-code auto-compact window | `home-manager/terminal.nix:49` | 2026-06-23 | anthropics/claude-code#43989 resolves |
@@ -30,6 +30,7 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:11` | 2025-08-21 | monitor reports a usable EDID on AMD |
 | Framework ambient light sensor | `nixie/laptop.nix:37` | 2026-02-27 | bugs.kde.org#502122 resolves |
 | Framework tlp disabled for tuned | `nixie/laptop.nix:27` | 2025-08-29 | (intentional; keep while using tuned) |
+| Framework hibernate S4 rollback | `nixie/laptop.nix:45` | 2026-09-16 | the kernel stops wedging amdgpu on a hibernation rollback, or the spurious wakeup source is fixed |
 | esp32 plugdev group | `nixos/esp32.nix:9` | — | a module declares `plugdev` for us |
 | NetworkManager-wait-online disabled | `common.nix:78` | 2025-12-04 | boot no longer hangs on it |
 | uv standalone Python `/etc/ssl/cert.pem` | `common.nix:168` | 2026-08-04 | nixpkgs ships `/etc/ssl/cert.pem`, or python-build-standalone finds NixOS certs |
@@ -59,12 +60,20 @@ WASM-streaming renderer fault.
 
 ### vesktop hibernate hang
 
-**Issue** — vesktop's Electron GPU process holds an amdgpu DMA fence that never signals
-during the hibernate freeze → `amdgpu_vm_fini` / `dma_fence_wait_timeout` hangs and
-hibernate aborts with "Device or resource busy".
+**Issue** — a vesktop Electron GPU process wedges on exit in `amdgpu_vm_fini` /
+`dma_fence_wait_timeout`, holding an amdgpu DMA fence that never signals, and from then on
+every suspend/hibernate dies with "1 tasks refusing to freeze" / "Device or resource busy".
+
+Note the causality, which the original version of this entry had backwards: the hang is a
+**downstream symptom**, not the cause. The GPU is already dead by the time any process gets
+stuck on it — killed by the amdgpu reset that follows the S4 hibernation rollback (see
+[Framework hibernate S4 rollback](#framework-hibernate-s4-rollback)). Any process holding a
+DRM fd then hangs forever in `drm_release`; vesktop is just the one that hit it most often.
+Keeping the GPU out of vesktop sidesteps that, but the actual fix for the lockup is the
+`HibernateMode=shutdown` entry below.
 
 **Fix** — wrap the binary with `--disable-gpu` via `symlinkJoin` + `wrapProgram`, forcing
-the GPU off so hibernate works with vesktop running. `home-manager/personal.nix:45-55`
+the GPU off so vesktop can never be the process that wedges. `home-manager/personal.nix:45-55`
 
 ```nix
 (pkgs.symlinkJoin {
@@ -401,6 +410,75 @@ services.tlp.enable = false;
 
 **Remove when** — intentional; keep while `tuned` is the chosen power manager. (Not an
 upstream bug — listed because it counteracts a `nixos-hardware` default.)
+
+---
+
+### Framework hibernate S4 rollback
+
+**Issue** — hibernate on `nixie` (Framework 13, Ryzen AI 300) writes its image fine
+(`PM: hibernation: Wrote 11329864 kbytes ...` → `PM: Image saving done`) and then aborts the
+final power-off. With the default `HibernateMode`, systemd writes `platform` to
+`/sys/power/disk`, so the kernel finishes through `hibernation_platform_enter()` (ACPI S4),
+which re-checks `pm_wakeup_pending()` after the second `dpm_suspend_end()`. A stray wakeup
+event makes it bail:
+
+```
+PM: hibernation: Wakeup event detected during hibernation, rolling back.
+```
+
+The rollback resumes devices, and amdgpu does not survive it — `ring sdma0 timeout` →
+`Ring sdma0 reset failed` → `GPU reset begin!` → `Mode2 reset failed!` → `ASIC reset failed
+with error, -5`. From there any process closing a DRM fd hangs forever in `amdgpu_vm_fini` /
+`dma_fence_wait_timeout` (see [vesktop hibernate hang](#vesktop-hibernate-hang)), and every
+later sleep attempt fails with `1 tasks refusing to freeze` — hundreds of retries per boot,
+ending in a lockup that needs a hard restart. Observed in 15 of the last 16 boots that
+attempted hibernation.
+
+Likely wakeup sources at the check: the touchpad `i2c-PIXA3854:00` (by far the top wakeup
+activation count) and keyboard `serio0`, both wakeup-enabled — hibernate is triggered by
+lid-close or by KDE's hybrid sleep, which leaves an input/resume event pending exactly when
+the S4 enter looks for one.
+
+**Fix** — `HibernateMode=shutdown` makes `power_down()` skip `hibernation_platform_enter()`
+and call `kernel_power_off()` (S5) directly. `nixie/laptop.nix:44-45`
+
+```nix
+systemd.sleep.settings.Sleep.HibernateMode = "shutdown";
+```
+
+`/sys/power/disk` only selects *how the machine powers off after the image has already been
+written*, so the snapshot and the resume path are untouched; only the final power-off call
+changes, and with it the `pm_wakeup_pending()` check that causes the rollback. What is given
+up is the ACPI S4 firmware handshake, so the `S4`-armed sources in `/proc/acpi/wakeup`
+(`GPP0`, `NHI0`, …) no longer wake the machine — it wakes by power button, as it already did.
+
+Use `systemd.sleep.settings` (the RFC-0042 settings option that writes
+`/etc/systemd/sleep.conf`), **not** `systemd.sleep.extraConfig` — the latter is removed and
+evaluates silently while producing nothing.
+
+Verify: `systemd-analyze cat-config systemd/sleep.conf | grep HibernateMode` prints
+`HibernateMode=shutdown`, `cat /sys/power/disk` reads `[shutdown]`, and after a hibernate
+`journalctl -b -1 -k | grep -E "rolling back|ring sdma0|GPU reset begin|refusing to freeze"`
+stays empty while `Image saving done` / `Image loaded` are both present.
+
+**Added** — 2026-09-16
+
+**Remove when** — the kernel no longer wedges amdgpu on a hibernation rollback, or the
+spurious wakeup source is fixed.
+
+**Link** — https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/261
+
+Considered and rejected:
+
+- **`pm_async=0`** — an n=1 community workaround for hibernate *restore* failures on this
+  model. No restore failures here (the one clean hibernate resumed fine), so it treats a
+  problem we don't have and confounds attribution.
+- **udev rules disabling touchpad/keyboard wakeup** — attacks the trigger rather than the
+  abort path, and costs touchpad/keyboard wake from S3. Held as a fallback if rollbacks
+  persist; identify the culprit first with
+  `sudo cat /sys/kernel/debug/wakeup_sources` right after a failed attempt.
+- **`boot.resumeDevice`** — unset, and resume demonstrably works via systemd initrd's
+  `HibernateLocation` EFI variable. Not a cause.
 
 ---
 
