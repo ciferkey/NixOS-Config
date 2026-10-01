@@ -58,6 +58,8 @@
     glow
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
+    nix-update
+    nixpkgs-review
     omp
     poppler-utils # for pdf handling
     sox # for voice in claude code
