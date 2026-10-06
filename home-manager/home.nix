@@ -57,6 +57,7 @@
     nerd-fonts.inconsolata-lgc
     nerd-fonts.hack
     nix-update
+    nixfmt
     nixpkgs-review
     omp
     poppler-utils # for pdf handling
