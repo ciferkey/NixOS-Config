@@ -15,14 +15,11 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 
 | Workaround | File | Added | Remove when |
 |---|---|---|---|
-| Obsidian electron_41 crash | `home-manager/personal.nix:34` | 2026-07-17 | nixpkgs obsidian ships a patched electron_41 |
-| vesktop hibernate hang (GPU-wedge symptom) | `home-manager/personal.nix:45` | 2026-07-12 | vesktop HW-accel works on AMD/Wayland |
-| electron-40 EOL insecure exception | `home-manager/home.nix:46` | 2026-07-17 | vesktop bumps electron |
-| Firefox profile path pin | `home-manager/personal.nix:112` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
+| Firefox profile path pin | `home-manager/personal.nix:99` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
 | claude-code auto-compact window | `home-manager/terminal.nix:87` | 2026-06-23 | anthropics/claude-code#43989 resolves |
 | claude-code installation checks | `home-manager/terminal.nix:92` | 2026-06-23 | anthropics/claude-code#17289 resolves |
-| opencode lsp flag | `home-manager/personal.nix:129` | — | anomalyco/opencode#23566 resolves |
-| opencode experimental-subagents env var | `home-manager/personal.nix:146` | 2026-07-17 | a scoped env mechanism exists |
+| opencode lsp flag | `home-manager/personal.nix:116` | — | anomalyco/opencode#23566 resolves |
+| opencode experimental-subagents env var | `home-manager/personal.nix:133` | 2026-07-17 | a scoped env mechanism exists |
 | thunderbird-mcp two-half version skew | `home-manager/terminal.nix:142` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
 | zellij fish integration | `home-manager/terminal.nix:347` |
 | Stylix Zenburn palette + ghostty colors | `home-manager/terminal.nix:38` | 2026-10-01 | stylix ghostty target supports base24 (nix-community/stylix#252) | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
@@ -38,80 +35,6 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 
 ---
 
-## Electron / AMD
-
-### Obsidian electron_41 crash
-
-**Issue** — `electron_41` (obsidian's bundled default) crashes on startup with a
-WASM-streaming renderer fault.
-
-**Fix** — override to `electron_42` (>= 42.4.1 has the patch). `home-manager/personal.nix:34-37`
-
-```nix
-(obsidian.override {electron = electron_42;})
-```
-
-**Added** — 2026-07-17
-
-**Remove when** — nixpkgs' obsidian picks up a patched `electron_41`.
-
-**Link** — https://github.com/electron/electron/issues/52178
-
----
-
-### vesktop hibernate hang
-
-**Issue** — a vesktop Electron GPU process wedges on exit in `amdgpu_vm_fini` /
-`dma_fence_wait_timeout`, holding an amdgpu DMA fence that never signals, and from then on
-every suspend/hibernate dies with "1 tasks refusing to freeze" / "Device or resource busy".
-
-Note the causality, which the original version of this entry had backwards: the hang is a
-**downstream symptom**, not the cause. The GPU is already dead by the time any process gets
-stuck on it — killed by the amdgpu reset that follows the S4 hibernation rollback (see
-[Framework hibernate S4 rollback](#framework-hibernate-s4-rollback)). Any process holding a
-DRM fd then hangs forever in `drm_release`; vesktop is just the one that hit it most often.
-Keeping the GPU out of vesktop sidesteps that, but the actual fix for the lockup is the
-`HibernateMode=shutdown` entry below.
-
-**Fix** — wrap the binary with `--disable-gpu` via `symlinkJoin` + `wrapProgram`, forcing
-the GPU off so vesktop can never be the process that wedges. `home-manager/personal.nix:45-55`
-
-```nix
-(pkgs.symlinkJoin {
-  name = "vesktop";
-  paths = [pkgs.vesktop];
-  nativeBuildInputs = [pkgs.makeWrapper];
-  postBuild = "wrapProgram $out/bin/vesktop --add-flags \"--disable-gpu\"";
-})
-```
-
-**Added** — 2026-07-12
-
-**Remove when** — vesktop HW-accel works on AMD/Wayland.
-
-**Link** — https://github.com/Vencord/Vesktop/issues/1009
-
----
-
-### electron-40 EOL insecure exception
-
-**Issue** — vesktop pins `electron_40`, which went EOL 2026-07 and is flagged as an
-insecure package.
-
-**Fix** — allow the specific insecure package. `home-manager/home.nix:46-49`
-
-```nix
-permittedInsecurePackages = [
-  "electron-40.10.5"
-];
-```
-
-**Added** — 2026-07-17
-
-**Remove when** — vesktop bumps electron.
-
----
-
 ## stateVersion 26.05 pins
 
 These pin pre-26.05 home-manager defaults so the existing state keeps working. Drop each on
@@ -122,7 +45,7 @@ a fresh `stateVersion` ≥ 26.05 install.
 **Issue** — home-manager changed the default Firefox config path in 26.05; the existing
 profile lives at the old path.
 
-**Fix** — pin the pre-26.05 path. `home-manager/personal.nix:112-113`
+**Fix** — pin the pre-26.05 path. `home-manager/personal.nix:99-100`
 
 ```nix
 configPath = ".mozilla/firefox";
@@ -172,7 +95,7 @@ DISABLE_INSTALLATION_CHECKS = "1";
 
 **Issue** — opencode LSP integration needs to be explicitly enabled to work as expected.
 
-**Fix** — set the flag. `home-manager/personal.nix:129`
+**Fix** — set the flag. `home-manager/personal.nix:116`
 
 ```nix
 lsp = true;
@@ -191,7 +114,7 @@ config file (`opencode.json` has no `env` field, unlike claude-code's settings),
 upstream `programs.opencode` home-manager module exposes no env option nor wraps the binary
 with `--set`.
 
-**Fix** — set it globally in the shell environment. `home-manager/personal.nix:146-151`
+**Fix** — set it globally in the shell environment. `home-manager/personal.nix:132-137`
 
 ```nix
 home.sessionVariables.OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
@@ -416,7 +339,7 @@ PM: hibernation: Wakeup event detected during hibernation, rolling back.
 The rollback resumes devices, and amdgpu does not survive it — `ring sdma0 timeout` →
 `Ring sdma0 reset failed` → `GPU reset begin!` → `Mode2 reset failed!` → `ASIC reset failed
 with error, -5`. From there any process closing a DRM fd hangs forever in `amdgpu_vm_fini` /
-`dma_fence_wait_timeout` (see [vesktop hibernate hang](#vesktop-hibernate-hang)), and every
+`dma_fence_wait_timeout` (vesktop was the usual victim), and every
 later sleep attempt fails with `1 tasks refusing to freeze` — hundreds of retries per boot,
 ending in a lockup that needs a hard restart. Observed in 15 of the last 16 boots that
 attempted hibernation.

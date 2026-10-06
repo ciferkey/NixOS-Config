@@ -44,10 +44,6 @@
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
-      # vesktop pins electron_40, which went EOL 2026-07. Remove once vesktop bumps electron.
-      permittedInsecurePackages = [
-        "electron-40.10.5"
-      ];
     };
   };
 

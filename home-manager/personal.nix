@@ -31,10 +31,7 @@
     jellyfin-media-player
     #libreoffice-qt-fresh
     mangohud
-    # Workaround for Electron 41 WASM-streaming renderer crash (electron/electron#52178).
-    # electron_41 (bundled default) crashes on startup; electron_42 (>=42.4.1) has the fix.
-    # Remove once nixpkgs' obsidian picks up a patched electron_41.
-    (obsidian.override {electron = electron_42;})
+    obsidian
     picard
     pocket-casts
     jetbrains.pycharm
@@ -42,17 +39,7 @@
     rocmPackages.rocm-smi
     signal-desktop
     sone
-    # --disable-gpu: vesktop's Electron GPU process holds an amdgpu DMA fence that never
-    # signals during the hibernate freeze -> amdgpu_vm_fini/dma_fence_wait_timeout hangs and
-    # hibernate aborts with "Device or resource busy". Forcing GPU off lets hibernate work
-    # with vesktop running. Vesktop HW-accel is buggy on AMD/Wayland:
-    # https://github.com/Vencord/Vesktop/issues/1009
-    (pkgs.symlinkJoin {
-      name = "vesktop";
-      paths = [pkgs.vesktop];
-      nativeBuildInputs = [pkgs.makeWrapper];
-      postBuild = "wrapProgram $out/bin/vesktop --add-flags \"--disable-gpu\"";
-    })
+    vesktop
 
     android-studio
     jdk17
