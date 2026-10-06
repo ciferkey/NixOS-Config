@@ -15,4 +15,9 @@
 
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
+
+  # Steam Frame wireless adapter needs 6 GHz, which the world regdom (00) disables.
+  boot.extraModprobeConfig = ''
+    options cfg80211 ieee80211_regdom=US
+  '';
 }

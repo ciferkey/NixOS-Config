@@ -24,10 +24,11 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | opencode lsp flag | `home-manager/personal.nix:129` | — | anomalyco/opencode#23566 resolves |
 | opencode experimental-subagents env var | `home-manager/personal.nix:146` | 2026-07-17 | a scoped env mechanism exists |
 | thunderbird-mcp two-half version skew | `home-manager/terminal.nix:142` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
-| zellij fish integration | `home-manager/terminal.nix:348` |
+| zellij fish integration | `home-manager/terminal.nix:347` |
 | Stylix Zenburn palette + ghostty colors | `home-manager/terminal.nix:38` | 2026-10-01 | stylix ghostty target supports base24 (nix-community/stylix#252) | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
 | SDDM → KWallet startup fix | `common.nix:153` | 2026-01-13 | KWallet starts under SDDM without `forceRun` |
 | Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:11` | 2025-08-21 | monitor reports a usable EDID on AMD |
+| Steam Frame adapter 6 GHz regdom | `nixos/desktop.nix:19` | 2026-10-02 | NixOS selects a country automatically, or the adapter is retired |
 | Framework ambient light sensor | `nixie/laptop.nix:37` | 2026-02-27 | bugs.kde.org#502122 resolves |
 | Framework tlp disabled for tuned | `nixie/laptop.nix:27` | 2025-08-29 | (intentional; keep while using tuned) |
 | Framework hibernate S4 rollback | `nixie/laptop.nix:45` | 2026-09-16 | the kernel stops wedging amdgpu on a hibernation rollback, or the spurious wakeup source is fixed |
@@ -244,7 +245,7 @@ the add-on becomes declaratively manageable.
 
 **Issue** — home-manager's zellij module didn't wire up fish integration until PR #6695.
 
-**Fix** — enable it explicitly. `home-manager/terminal.nix:348`
+**Fix** — enable it explicitly. `home-manager/terminal.nix:347`
 
 ```nix
 enableFishIntegration = true;
@@ -331,6 +332,34 @@ hardware.display.outputs."DP-2".mode = "e";
 
 **Remove when** — the monitor reports a usable EDID on AMD (hardware-specific; likely
 permanent while this monitor is in use).
+
+---
+
+### Steam Frame adapter 6 GHz regdom
+
+**Issue** — the Steam Frame wireless adapter (`rtw89_8852cu`) links over 6 GHz. With no
+country set, `cfg80211` uses the world regulatory domain (`00`), which disables 6 GHz. The
+adapter interface hangs in NetworkManager `connecting (configuring)`, the headset never
+attaches, and SteamVR fails with `VRInitError_Driver_WirelessHmdNotConnected (215)`.
+
+**Fix** — set the country code on the `cfg80211` module. `nixos/desktop.nix:19-22`
+
+```nix
+boot.extraModprobeConfig = ''
+  options cfg80211 ieee80211_regdom=US
+'';
+```
+
+Needs a reboot, since `cfg80211` is already loaded. Verify:
+`cat /sys/module/cfg80211/parameters/ieee80211_regdom` prints `US`.
+
+**Added** — 2026-10-02
+
+**Remove when** — NixOS selects a regulatory country automatically, or the adapter is no
+longer used.
+
+**Link** — https://wiki.nixos.org/wiki/Steam_Frame and
+https://github.com/ValveSoftware/SteamOS/issues/2852
 
 ---
 

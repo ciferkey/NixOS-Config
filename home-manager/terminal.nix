@@ -69,7 +69,6 @@ in {
       nvf.enable = true;
       opencode.enable = true;
       vivid.enable = true;
-      zellij.enable = true;
     };
   };
 
@@ -348,7 +347,7 @@ in {
     enableFishIntegration = true; # https://github.com/nix-community/home-manager/pull/6695clade
     attachExistingSession = false; # So drop down has own session, since no way to control session for dropdown.
     settings = {
-      theme = "stylix"; # defined by the stylix zellij target, which does not select it
+      theme = "ansi"; # follows ghostty's 16-color Zenburn, like ghostty colors.enable = false
       focus_follows_mouse = true;
       show_startup_tips = false;
     };
