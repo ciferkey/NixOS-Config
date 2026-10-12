@@ -16,7 +16,6 @@
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
     inputs.nvf.homeManagerModules.default
-    inputs.stylix.homeModules.stylix
     ./terminal.nix
   ];
 

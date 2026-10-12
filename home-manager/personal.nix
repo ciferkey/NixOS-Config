@@ -125,6 +125,7 @@
       };
     };
     tui = {
+      theme = "zenburn";
       plugin = ["oh-my-opencode-slim"];
     };
   };

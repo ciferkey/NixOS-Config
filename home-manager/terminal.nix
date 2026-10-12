@@ -29,53 +29,18 @@ in {
 
   programs.atuin.enable = true;
 
-  # Terminal-only theming; autoEnable = false keeps stylix off KDE/GTK/Qt/browsers.
-  stylix = {
+  programs.bat = {
     enable = true;
-    autoEnable = false;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/zenburn.yaml";
-    # elnawe's base16 port is darker/duller than classic Zenburn; match ghostty's Zenburn.
-    override = {
-      base00 = "3f3f3f"; # background
-      base01 = "4f4f4f"; # lighter background (status bars)
-      base02 = "5f5f5f"; # selection
-      base03 = "709080"; # comments
-      base08 = "dca3a3"; # red
-      base09 = "dfaf8f"; # orange
-      base0A = "f0dfaf"; # yellow
-      base0B = "60b48a"; # green
-      base0C = "93e0e3"; # cyan
-      base0D = "94bff3"; # blue
-      base0E = "dc8cc3"; # magenta
-      base0F = "cc9393"; # brown slot; upstream is #000000
-    };
-    polarity = "dark";
-    fonts = {
-      monospace = {
-        package = pkgs.nerd-fonts.inconsolata-lgc;
-        name = "Inconsolata LGC Nerd Font Mono";
-      };
-    };
-    targets = {
-      bat.enable = true;
-      btop.enable = true;
-      fish.enable = true;
-      fzf.enable = true;
-      ghostty = {
-        enable = true;
-        colors.enable = false; # stylix maps bright ANSI onto normal; keep ghostty's 16-color Zenburn
-      };
-      lazygit.enable = true;
-      nvf.enable = true;
-      opencode.enable = true;
-      vivid.enable = true;
+    config = {
+      theme = "zenburn";
     };
   };
 
-  programs.bat.enable = true;
-
-  # Exports LS_COLORS (theme from stylix) for eza, fd and fzf.
-  programs.vivid.enable = true;
+  # Exports LS_COLORS for eza, fd and fzf.
+  programs.vivid = {
+    enable = true;
+    activeTheme = "zenburn";
+  };
 
   programs.claude-code = {
     enable = true;
@@ -162,6 +127,9 @@ in {
   programs.btop = {
     enable = true;
     package = pkgs.btop.override {rocmSupport = true;};
+    settings = {
+      theme = "tty";
+    };
   };
 
   programs.delta = {
@@ -170,8 +138,7 @@ in {
     options = {
       line-numbers = true;
       side-by-side = true;
-      # stylix has no delta target; reuse its generated bat theme.
-      syntax-theme = config.programs.bat.config.theme;
+      syntax-theme = "zenburn";
     };
   };
 
@@ -272,6 +239,7 @@ in {
   programs.ghostty = {
     enable = true;
     settings = {
+      font-family = "Inconsolata LGC Nerd Font Mono";
       theme = "Zenburn";
       keybind = [
         # https://ghostty.org/docs/config/keybind/reference#toggle_quick_terminal
@@ -311,6 +279,12 @@ in {
         expandtab = true;
       };
 
+      theme.enable = false;
+      extraPlugins.zenburn = {
+        package = pkgs.vimPlugins.zenburn;
+        setup = "vim.cmd[[colorscheme zenburn]]";
+      };
+
       treesitter.enable = true;
       treesitter.grammars = pkgs.vimPlugins.nvim-treesitter.allGrammars;
 
@@ -347,7 +321,7 @@ in {
     enableFishIntegration = true; # https://github.com/nix-community/home-manager/pull/6695clade
     attachExistingSession = false; # So drop down has own session, since no way to control session for dropdown.
     settings = {
-      theme = "ansi"; # follows ghostty's 16-color Zenburn, like ghostty colors.enable = false
+      theme = "ansi"; # follows ghostty's 16-color Zenburn
       focus_follows_mouse = true;
       show_startup_tips = false;
     };

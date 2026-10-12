@@ -16,13 +16,12 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | Workaround | File | Added | Remove when |
 |---|---|---|---|
 | Firefox profile path pin | `home-manager/personal.nix:99` | 2026-06-23 | fresh `stateVersion` ≥ 26.05 install |
-| claude-code auto-compact window | `home-manager/terminal.nix:87` | 2026-06-23 | anthropics/claude-code#43989 resolves |
-| claude-code installation checks | `home-manager/terminal.nix:92` | 2026-06-23 | anthropics/claude-code#17289 resolves |
+| claude-code auto-compact window | `home-manager/terminal.nix:51` | 2026-06-23 | anthropics/claude-code#43989 resolves |
+| claude-code installation checks | `home-manager/terminal.nix:56` | 2026-06-23 | anthropics/claude-code#17289 resolves |
 | opencode lsp flag | `home-manager/personal.nix:116` | — | anomalyco/opencode#23566 resolves |
 | opencode experimental-subagents env var | `home-manager/personal.nix:133` | 2026-07-17 | a scoped env mechanism exists |
-| thunderbird-mcp two-half version skew | `home-manager/terminal.nix:142` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
-| zellij fish integration | `home-manager/terminal.nix:347` |
-| Stylix Zenburn palette + ghostty colors | `home-manager/terminal.nix:38` | 2026-10-01 | stylix ghostty target supports base24 (nix-community/stylix#252) | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
+| thunderbird-mcp two-half version skew | `home-manager/terminal.nix:106` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
+| zellij fish integration | `home-manager/terminal.nix:321` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
 | SDDM → KWallet startup fix | `common.nix:153` | 2026-01-13 | KWallet starts under SDDM without `forceRun` |
 | Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:11` | 2025-08-21 | monitor reports a usable EDID on AMD |
 | Steam Frame adapter 6 GHz regdom | `nixos/desktop.nix:19` | 2026-10-02 | NixOS selects a country automatically, or the adapter is retired |
@@ -63,7 +62,7 @@ configPath = ".mozilla/firefox";
 
 **Issue** — the default auto-compact window triggers context compaction earlier than wanted.
 
-**Fix** — raise it via env. `home-manager/terminal.nix:87`
+**Fix** — raise it via env. `home-manager/terminal.nix:51`
 
 ```nix
 CLAUDE_CODE_AUTO_COMPACT_WINDOW = "1000000";
@@ -79,7 +78,7 @@ CLAUDE_CODE_AUTO_COMPACT_WINDOW = "1000000";
 
 **Issue** — claude-code's installation checks misbehave under the Nix-managed install.
 
-**Fix** — disable them via env. `home-manager/terminal.nix:92`
+**Fix** — disable them via env. `home-manager/terminal.nix:56`
 
 ```nix
 DISABLE_INSTALLATION_CHECKS = "1";
@@ -142,7 +141,7 @@ mean declaring profiles and accounts. Pinning an XPI in the store would also fig
 self-updater.
 
 **Fix** — none available; documented instead. The bridge is declared at
-`home-manager/terminal.nix:142-145`:
+`home-manager/terminal.nix:106-111`:
 
 ```nix
 servers.thunderbird = {
@@ -168,7 +167,7 @@ the add-on becomes declaratively manageable.
 
 **Issue** — home-manager's zellij module didn't wire up fish integration until PR #6695.
 
-**Fix** — enable it explicitly. `home-manager/terminal.nix:347`
+**Fix** — enable it explicitly. `home-manager/terminal.nix:321`
 
 ```nix
 enableFishIntegration = true;
@@ -180,32 +179,6 @@ enableFishIntegration = true;
 
 **Link** — https://github.com/nix-community/home-manager/pull/6695 (the inline comment has a
 `6695clade` → `6695` typo worth fixing next time that line is touched).
-
----
-
-## Theming
-
-### Stylix Zenburn palette + ghostty colors
-
-**Issue** — Stylix is effectively base16-only. Its bundled Zenburn (elnawe's tinted-theming
-port) is darker and duller than classic Zenburn: background `#383838`, green `#5f7f5f`
-(2.6:1 contrast on the background), teal blue, grey selection. The ghostty target also maps
-ANSI 9-14 onto the same colors as 1-6, losing the dim/bright pairs.
-
-**Fix** — two supported escape hatches. `home-manager/terminal.nix:38-52,64-67,276`
-
-- `stylix.override` moves base00-03 and base08-0F to classic Zenburn values matching
-  ghostty's built-in `Zenburn` theme. base04-07 stay as upstream.
-- `stylix.targets.ghostty.colors.enable = false` keeps the Stylix font, and
-  `programs.ghostty.settings.theme = "Zenburn"` supplies all 16 ANSI colors.
-
-**Added** — 2026-10-01
-
-**Remove when** — the Stylix ghostty target supports base24 (or another palette with
-distinct bright colors). The override can go if a better Zenburn base16 port lands in
-`base16-schemes`.
-
-**Link** — https://github.com/nix-community/stylix/issues/252
 
 ---
 
@@ -430,7 +403,7 @@ ordering).
 
 ### uv standalone Python `/etc/ssl/cert.pem`
 
-**Issue** — uv (`home-manager/terminal.nix:156`) downloads **python-build-standalone**
+**Issue** — uv (`home-manager/terminal.nix:163`) downloads **python-build-standalone**
 interpreters into `~/.local/share/uv/python/`. Those builds compile OpenSSL with
 `openssldir=/etc/ssl` (the Debian layout), so their compiled-in defaults are
 `SSL_CERT_FILE=/etc/ssl/cert.pem` and `SSL_CERT_DIR=/etc/ssl/certs` (looked up by *hashed*
