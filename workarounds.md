@@ -23,8 +23,9 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | thunderbird-mcp two-half version skew | `home-manager/terminal.nix:106` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
 | zellij fish integration | `home-manager/terminal.nix:321` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
 | SDDM → KWallet startup fix | `common.nix:153` | 2026-01-13 | KWallet starts under SDDM without `forceRun` |
-| Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:11` | 2025-08-21 | monitor reports a usable EDID on AMD |
-| Steam Frame adapter 6 GHz regdom | `nixos/desktop.nix:19` | 2026-10-02 | NixOS selects a country automatically, or the adapter is retired |
+| Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:12` | 2025-08-21 | monitor reports a usable EDID on AMD |
+| Bazzite chainload via EDK2 shell | `nixos/desktop.nix:22` | 2026-10-20 | systemd-boot loads from another disk's ESP, or a switch to GRUB/os-prober |
+| Steam Frame adapter 6 GHz regdom | `nixos/desktop.nix:37` | 2026-10-02 | NixOS selects a country automatically, or the adapter is retired |
 | Framework ambient light sensor | `nixie/laptop.nix:37` | 2026-02-27 | bugs.kde.org#502122 resolves |
 | Framework tlp disabled for tuned | `nixie/laptop.nix:27` | 2025-08-29 | (intentional; keep while using tuned) |
 | Framework hibernate S4 rollback | `nixie/laptop.nix:45` | 2026-09-16 | the kernel stops wedging amdgpu on a hibernation rollback, or the spurious wakeup source is fixed |
@@ -216,7 +217,7 @@ kde.kwallet = {
 **Issue** — the BenQ XL2420G reports a bad/insufficient EDID on the AMD desktop, so the mode
 needs to be forced.
 
-**Fix** — supply a known-good EDID and mode. `nixos/desktop.nix:11-14`
+**Fix** — supply a known-good EDID and mode. `nixos/desktop.nix:12-20`
 
 ```nix
 hardware.display.edid.linuxhw."XL2420G_2014" = ["BNQ7F39" "XL2420G" "2014" "2E7C0DC569A3"];
@@ -231,6 +232,38 @@ permanent while this monitor is in use).
 
 ---
 
+### Bazzite chainload via EDK2 shell
+
+**Issue** — Bazzite is on a separate disk (`nvme2n1p1`) with its own ESP. systemd-boot can
+only load binaries from its own ESP, so it cannot boot `\EFI\fedora\shimx64.efi` directly.
+
+**Fix** — install the EDK2 UEFI Shell with `extraFiles` (not `edk2-uefi-shell.enable`, which
+adds an unwanted "EDK2 UEFI Shell" menu entry) and add a Bazzite entry that runs shim through
+it. `nixos/desktop.nix:22-32`
+
+```nix
+boot.loader.systemd-boot = {
+  extraFiles."efi/edk2-uefi-shell/shell.efi" = "${pkgs.edk2-uefi-shell}/shell.efi";
+  extraEntries."bazzite.conf" = ''
+    title Bazzite
+    efi /efi/edk2-uefi-shell/shell.efi
+    options -nointerrupt -nomap -noversion HD2b:EFI\fedora\shimx64.efi
+    sort-key o_bazzite
+  '';
+};
+```
+
+`HD2b` is the shell's handle for Bazzite's ESP. It depends on disk enumeration order, so
+adding, removing, or reordering drives can break the entry. Re-find it by booting the shell
+and running `map -c`.
+
+**Added** — 2026-10-20
+
+**Remove when** — systemd-boot can load from another disk's ESP, or the desktop switches to
+GRUB with os-prober.
+
+---
+
 ### Steam Frame adapter 6 GHz regdom
 
 **Issue** — the Steam Frame wireless adapter (`rtw89_8852cu`) links over 6 GHz. With no
@@ -238,7 +271,7 @@ country set, `cfg80211` uses the world regulatory domain (`00`), which disables 
 adapter interface hangs in NetworkManager `connecting (configuring)`, the headset never
 attaches, and SteamVR fails with `VRInitError_Driver_WirelessHmdNotConnected (215)`.
 
-**Fix** — set the country code on the `cfg80211` module. `nixos/desktop.nix:19-22`
+**Fix** — set the country code on the `cfg80211` module. `nixos/desktop.nix:37-40`
 
 ```nix
 boot.extraModprobeConfig = ''
