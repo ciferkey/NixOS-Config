@@ -146,7 +146,8 @@ in {
     # Query nxv's hosted index instead of maintaining a ~220MB local DB (which goes stale).
     nxv-api = pkgs.symlinkJoin {
       name = "nxv-api";
-      paths = [pkgs.nxv];
+      # nixpkgs#570944, #570940: nxv lacks pkg-config, zstd, and sqlite inputs.
+      paths = [(pkgs.nxv.overrideAttrs {dontCargoUseSystemLibs = true;})];
       nativeBuildInputs = [pkgs.makeWrapper];
       postBuild = ''
         wrapProgram $out/bin/nxv --set NXV_API_URL https://nxv.urandom.io

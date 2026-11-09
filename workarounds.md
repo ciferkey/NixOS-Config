@@ -21,7 +21,7 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | opencode lsp flag | `home-manager/personal.nix:116` | — | anomalyco/opencode#23566 resolves |
 | opencode experimental-subagents env var | `home-manager/personal.nix:133` | 2026-07-17 | a scoped env mechanism exists |
 | thunderbird-mcp two-half version skew | `home-manager/terminal.nix:106` | 2026-07-30 | upstream adds a version handshake, or the add-on is declarative |
-| zellij fish integration | `home-manager/terminal.nix:321` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
+| zellij fish integration | `home-manager/terminal.nix:322` | 2026-02-18 | home-manager PR #6695 lands in the pinned rev |
 | SDDM → KWallet startup fix | `common.nix:153` | 2026-01-13 | KWallet starts under SDDM without `forceRun` |
 | Monitor EDID override (BenQ XL2420G) | `nixos/desktop.nix:12` | 2025-08-21 | monitor reports a usable EDID on AMD |
 | Bazzite chainload via EDK2 shell | `nixos/desktop.nix:22` | 2026-10-20 | systemd-boot loads from another disk's ESP, or a switch to GRUB/os-prober |
@@ -32,6 +32,7 @@ Ctrl-R, ghostty ssh integration, the `nxv` hosted-API wrap, and third-party flak
 | esp32 plugdev group | `nixos/esp32.nix:9` | — | a module declares `plugdev` for us |
 | NetworkManager-wait-online disabled | `common.nix:78` | 2025-12-04 | boot no longer hangs on it |
 | uv standalone Python `/etc/ssl/cert.pem` | `common.nix:168` | 2026-08-04 | nixpkgs ships `/etc/ssl/cert.pem`, or python-build-standalone finds NixOS certs |
+| nxv forced system libs opt-out | `home-manager/terminal.nix:149` | 2026-11-09 | nixpkgs `nxv` builds with `pkg-config`, `zstd`, and `sqlite` |
 
 ---
 
@@ -168,7 +169,7 @@ the add-on becomes declaratively manageable.
 
 **Issue** — home-manager's zellij module didn't wire up fish integration until PR #6695.
 
-**Fix** — enable it explicitly. `home-manager/terminal.nix:321`
+**Fix** — enable it explicitly. `home-manager/terminal.nix:322`
 
 ```nix
 enableFishIntegration = true;
@@ -436,7 +437,7 @@ ordering).
 
 ### uv standalone Python `/etc/ssl/cert.pem`
 
-**Issue** — uv (`home-manager/terminal.nix:163`) downloads **python-build-standalone**
+**Issue** — uv (`home-manager/terminal.nix:164`) downloads **python-build-standalone**
 interpreters into `~/.local/share/uv/python/`. Those builds compile OpenSSL with
 `openssldir=/etc/ssl` (the Debian layout), so their compiled-in defaults are
 `SSL_CERT_FILE=/etc/ssl/cert.pem` and `SSL_CERT_DIR=/etc/ssl/certs` (looked up by *hashed*
@@ -468,6 +469,33 @@ cover us. Both sides are long-lived; treat this as durable.
 **Link** —
 https://discourse.nixos.org/t/fix-ssl-sslcertverificationerror-with-uvs-standalone-python/71138
 and https://github.com/astral-sh/python-build-standalone/issues/858
+
+---
+
+## Rust packaging
+
+### nxv forced system libs opt-out
+
+**Issue** — NixOS/nixpkgs#537108 made `rustPlatform.cargoSetupHook` export
+`ZSTD_SYS_USE_PKG_CONFIG=1`, `LIBSQLITE3_SYS_USE_PKG_CONFIG=1`, and similar variables for every
+Rust package. The nixpkgs `nxv` package has no `pkg-config`, `zstd`, or `sqlite` inputs, so
+`zstd-sys` panics and `rehome` fails. `libsqlite3-sys` would fail next, because it checks
+`LIBSQLITE3_SYS_USE_PKG_CONFIG` before the `bundled` feature that `nxv` enables.
+
+**Fix** — opt out of the forced system libraries, which restores the vendored build.
+`home-manager/terminal.nix:149-150`
+
+```nix
+paths = [(pkgs.nxv.overrideAttrs {dontCargoUseSystemLibs = true;})];
+```
+
+**Added** — 2026-11-09
+
+**Remove when** — nixpkgs `nxv` builds with `pkg-config`, `zstd`, and `sqlite`.
+
+**Link** — https://github.com/NixOS/nixpkgs/pull/537108,
+https://github.com/NixOS/nixpkgs/issues/570944, and
+https://github.com/NixOS/nixpkgs/issues/570940
 
 ---
 
